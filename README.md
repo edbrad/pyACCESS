@@ -36,3 +36,14 @@ C:\py\pyACCESS> venv\Scripts\activate
 
 (venv) C:\py\pyACCESS>
 ~~~~ 
+
+## Install Django Framework
+Use Python package manager (pip) to download and install the latest version of **Django**
+
+~~~~
+(venv) C:\py\pyACCESS>pip install django
+Collecting django
+  Using cached Django-1.10.4-py2.py3-none-any.whl
+Installing collected packages: django
+Successfully installed django-1.10.4
+~~~~
