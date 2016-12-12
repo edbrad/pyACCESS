@@ -68,3 +68,89 @@ Django version 1.10.4, using settings 'pyACCESS.settings'
 Starting development server at http://127.0.0.1:8000/
 Quit the server with CTRL-BREAK.
 ~~~~
+
+## Create first App within the Project
+Create the first (main) Application under the parent Project
+
+~~~~
+(venv) C:\py\pyACCESS\pyACCESS>python manage.py startapp www
+~~~~
+
+## Register the new App with Django
+Update the Django Project's *settings.py* file to register the new App (www)
+
+~~~~
+# Application definition
+
+INSTALLED_APPS = [
+    'www',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+]
+~~~~
+
+## Bootstrap new App
+Wire up code to display basic web page from App.
+
+**Add Python linting (pylint) support in VS Code**: 
+
+*File --> Preferences --> Workspace Settings* (.vscode\settings.json)
+
+~~~~
+// Place your settings in this file to overwrite default and user settings.
+{
+    "python.linting.pylintArgs": ["--load-plugins", "pylint_django"]
+}
+~~~~
+
+**Add code for initial view**
+
+www\views.py
+~~~~
+from django.shortcuts import render
+
+# Create your views here.
+def index(request):
+    return render(request, 'index.html')
+~~~~
+
+create new *templates* folder under the App (www) folder to hold HTML template files (must be named "templates")
+
+www\templates\index.html 
+~~~~
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>pyACCESS</title>
+    </head>
+    <body>
+        <h1>pyACCESS</h1>
+    </body>
+</html>
+~~~~
+
+create a urls.py file in the new App directory (www)
+~~~~
+from django.conf.urls import url
+from . import views
+
+urlpatterns = [
+    url(r'^$', views.index),
+]
+~~~~
+
+add a reference/link in the Project's url file (pyAccess\urls.py) to the new url file in the child App (www). 
+the *include* library must be referenced
+~~~~
+from django.conf.urls import include, url
+from django.contrib import admin
+
+urlpatterns = [
+    url(r'^admin/', admin.site.urls),
+    url(r'^', include('www.urls')),
+]
+~~~~
