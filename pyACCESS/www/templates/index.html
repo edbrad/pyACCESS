@@ -1,13 +1,17 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html>
     <head>
         <title>pyACCESS - Legacy Database Access</title>
+        <link rel="stylesheet" href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.theme.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
     </head>
     <body>
         <h1>pyACCESS</h1>
         <form action="/jobnum-search/" method="get">
             <label for="jobnum">Enter EMS Job Number: </label>
-            <input id="jobnum" type="text" name="jobnum" value="{{ current_jobnum }}">
+            <input id="jobnum" type="text" name="jobnum" value="{{ jobnum }}">
             <input type="submit" value="OK">
         </form>
     </body>
