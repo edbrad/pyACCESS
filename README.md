@@ -4,7 +4,7 @@ Django/Python MS ACCESS Data Access Demo Web Application
 The purpose of this application is to demonstrate the ability to externaly access the EMS Legacy MS ACCESS databases.  
 This application is built using **Django**, a *Python-based* Web application framework.
 
-This application currently utilizes the **django-pyodbc-access** open-source library (https://github.com/EBNull/django-pyodbc-access).
+This application currently utilizes the **pyodbc** Python library to connect and read from the MS Access Database (.mdb).
 
 This Application is being primarily developed and maintained in a **Windows** (Windows 10) environment using **Visual Studio Code** (VSCODE).
 
@@ -155,35 +155,20 @@ urlpatterns = [
 ]
 ~~~~
 
-## Add MS Jet/ACCESS support (django-pyodbc-access)
+## Add MS Jet/ACCESS support (pyodbc)
 
-Download and configure the libary/app within the pyACCESS Project.  
-
-copy the **access** folder into the Project and add a reference to the folder (in pyACCESS\settings.py)
-
+install pyodbc library (pip).  
 ~~~~
-INSTALLED_APPS = [
-    'www',
-    'access',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-]
+(venv) C:\py\pyACCESS>pip install pyodbc
+Collecting pyodbc
+  Using cached pyodbc-3.1.1-cp35-cp35m-win32.whl
+Installing collected packages: pyodbc
+Successfully installed pyodbc-3.1.1
 ~~~~
 
-update the Database configuration (in pyACCESS\settings.py)
+import the library (in pyACCESS\views.py)
 ~~~~
-DATABASES = {
-    'default': {
-        'ENGINE': 'access.pyodbc',
-        'NAME': '"C:\data\mdb\Jtk2002_Data.mdb"',
-        'USER': 'admin',
-        'PASSWORD': '',
-    }
-}
+import pyodbc # Python ODBC Library (ACCESS 97 connectivity)
 ~~~~
 
 
