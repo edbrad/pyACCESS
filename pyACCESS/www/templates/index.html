@@ -4,6 +4,12 @@
         <title>pyACCESS</title>
     </head>
     <body>
-        <h1>pyACCESS</h1>
+        <h1>pyACCESS2</h1>
+        {% for row in rows %}
+          <section>
+            <p> {{ row.Jobnum }}</p>
+            <p> {{ row.Company }}</p>
+          </section>
+        {% endfor %}
     </body>
 </html>

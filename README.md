@@ -4,7 +4,7 @@ Django/Python MS ACCESS Data Access Demo Web Application
 The purpose of this application is to demonstrate the ability to externaly access the EMS Legacy MS ACCESS databases.  
 This application is built using **Django**, a *Python-based* Web application framework.
 
-This application currently utilizes the **django-pyodbc-access** open-source library (https://bitbucket.org/jkafader/django-pyodbc-access).
+This application currently utilizes the **django-pyodbc-access** open-source library (https://github.com/EBNull/django-pyodbc-access).
 
 This Application is being primarily developed and maintained in a **Windows** (Windows 10) environment using **Visual Studio Code** (VSCODE).
 
@@ -38,7 +38,7 @@ C:\py\pyACCESS> venv\Scripts\activate
 ~~~~ 
 
 ## Install Django Framework
-Use Python package manager (pip) to download and install the latest version of **Django**
+Use Python package manager (pip) to download and install the latest version of **Django**.
 
 ~~~~
 (venv) C:\py\pyACCESS>pip install django
@@ -70,14 +70,14 @@ Quit the server with CTRL-BREAK.
 ~~~~
 
 ## Create first App within the Project
-Create the first (main) Application under the parent Project
+Create the first (main) Application under the parent Project.
 
 ~~~~
 (venv) C:\py\pyACCESS\pyACCESS>python manage.py startapp www
 ~~~~
 
 ## Register the new App with Django
-Update the Django Project's *settings.py* file to register the new App (www)
+Update the Django Project's *settings.py* file to register the new App (www).
 
 ~~~~
 # Application definition
@@ -98,7 +98,7 @@ Wire up code to display basic web page from App.
 
 **Add Python linting (pylint) support in VS Code**: 
 
-*File --> Preferences --> Workspace Settings* (.vscode\settings.json)
+*File --> Preferences --> Workspace Settings* (.vscode\settings.json).
 
 ~~~~
 // Place your settings in this file to overwrite default and user settings.
@@ -118,7 +118,7 @@ def index(request):
     return render(request, 'index.html')
 ~~~~
 
-create new *templates* folder under the App (www) folder to hold HTML template files (must be named "templates")
+create new *templates* folder under the App (www) folder to hold HTML template files (must be named "templates").
 
 www\templates\index.html 
 ~~~~
@@ -133,7 +133,7 @@ www\templates\index.html
 </html>
 ~~~~
 
-create a urls.py file in the new App directory (www)
+create a urls.py file in the new App directory (www).
 ~~~~
 from django.conf.urls import url
 from . import views
@@ -144,7 +144,7 @@ urlpatterns = [
 ~~~~
 
 add a reference/link in the Project's url file (pyAccess\urls.py) to the new url file in the child App (www). 
-the *include* library must be referenced
+the *include* library must be referenced.
 ~~~~
 from django.conf.urls import include, url
 from django.contrib import admin
@@ -154,3 +154,37 @@ urlpatterns = [
     url(r'^', include('www.urls')),
 ]
 ~~~~
+
+## Add MS Jet/ACCESS support (django-pyodbc-access)
+
+Download and configure the libary/app within the pyACCESS Project.  
+
+copy the **access** folder into the Project and add a reference to the folder (in pyACCESS\settings.py)
+
+~~~~
+INSTALLED_APPS = [
+    'www',
+    'access',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+]
+~~~~
+
+update the Database configuration (in pyACCESS\settings.py)
+~~~~
+DATABASES = {
+    'default': {
+        'ENGINE': 'access.pyodbc',
+        'NAME': '"C:\data\mdb\Jtk2002_Data.mdb"',
+        'USER': 'admin',
+        'PASSWORD': '',
+    }
+}
+~~~~
+
+
+
