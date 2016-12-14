@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>pyACCESS</title>
+        <title>pyACCESS - Legacy Database Access</title>
     </head>
     <body>
         <h1>pyACCESS</h1>
-        {% for row in rows %}
-          <section>
-            <p> {{ row.Jobnum }}</p>
-            <p> {{ row.Company }}</p>
-          </section>
-        {% endfor %}
+        <form action="/jobnum-search/" method="get">
+            <label for="jobnum">Enter EMS Job Number: </label>
+            <input id="jobnum" type="text" name="jobnum" value="{{ current_jobnum }}">
+            <input type="submit" value="OK">
+        </form>
     </body>
 </html>

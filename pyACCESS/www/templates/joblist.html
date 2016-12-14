@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>pyACCESS - Legacy Database Access</title>
+    </head>
+    <body>
+        <h1>pyACCESS - Job List</h1>
+        {% for row in rows %}
+          <section>
+            <p> {{ row.Jobnum }}</p>
+            <p> {{ row.Company }}</p>
+          </section>
+        {% endfor %}
+    </body>
+</html>
