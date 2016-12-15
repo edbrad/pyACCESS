@@ -6,15 +6,16 @@
         <link rel="stylesheet" href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.min.css' %}">
         <link rel="stylesheet" href="{% static 'bootstrap-3.3.7-dist/css/bootstrap-theme.min.css' %}">
         <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+        <link rel="stylesheet" href="{% static 'css/main.css' %}">
     </head>
     <body>
-        <h1>pyACCESS</h1>
+        <h1>pyACCESS - Legacy Database Access</h1>
         <form action="/jobnum-search/" method="get">
             {% csrf_token %}
             <label for="jobnum">Enter EMS Job Number: </label>
             <input id="jobsearch" type="text" name="jobnum" value="{{ jobnum }}" placeholder="9999-99">
-            <input type="submit" value="OK">
-        </form>
+            <input type="submit" value="SEARCH">
+        </form>    
         <script src="{% static 'jquery-3.1.1-dist/js/jquery-3.1.1.js' %}"></script>
         <script src="{% static '/js/main.js' %}"></script>
     </body>

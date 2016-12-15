@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load humanize %}
 <!DOCTYPE html>
 <html>
     <head>
@@ -6,10 +7,15 @@
         <link rel="stylesheet" href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.min.css' %}">
         <link rel="stylesheet" href="{% static 'bootstrap-3.3.7-dist/css/bootstrap-theme.min.css' %}">
         <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+        <link rel="stylesheet" href="{% static 'css/main.css' %}">
     </head>
     <body>
         <h1>pyACCESS - Job List</h1>
-
+        <h3>Results For: &nbsp  "{{ jobnum }}"</h3>
+        <h2>Found Jobs: &nbsp {{ rows|length|intcomma }}</h2>
+        <div>
+            <a class="btn" href="/">BACK</a> 
+        </div>
         <div>
             <table style="width:100%">
                 <tr>
@@ -22,19 +28,21 @@
                     <th>Permit</th>
                 </tr>
                 {% for row in rows %}
-                <tr>
-                    <td>{{ row.Jobnum }}</td>
-                    <td>{{ row.Company }}</td>
-                    <td>{{ row.JobDescp }}</td>
-                    <td>{{ row.Remark }}</td>
-                    <td>{{ row.DropDate }}</td>
-                    <td>{{ row.ToDropDate }}</td>
-                    <td>{{ row.Permit }}</td>
-                </tr>
+                    <tr>
+                        <td><a href="/job-details/{{ row.Jobnum }}"> {{ row.Jobnum }}</a></td>
+                        <td>{{ row.Company }}</td>
+                        <td>{{ row.JobDescp }}</td>
+                        <td>{{ row.Remark }}</td>
+                        <td>{{ row.DropDate }}</td>
+                        <td>{{ row.ToDropDate }}</td>
+                        <td>{{ row.Permit }}</td>
+                    </tr>
                 {% endfor %}
             </table>
+            <div>
+                <a class="btn" href="/">BACK</a> 
+            </div>
         </div>
-        
         <script src="{% static 'jquery-3.1.1-dist/js/jquery-3.1.1.js' %}"></script>
         <script src="{% static '/js/main.js' %}"></script>
     </body>

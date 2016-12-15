@@ -1,0 +1,75 @@
+{% load staticfiles %}
+{% load humanize %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>pyACCESS - Legacy Database Access</title>
+        <link rel="stylesheet" href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap-3.3.7-dist/css/bootstrap-theme.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+        <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    </head>
+    <body>
+        <h1>pyACCESS - Job Details</h1>
+        <h2>Overview</h2>
+        <div>
+            {% for row in rows %}
+            <table>
+                <tr>
+                    <th>Job Number:</th>
+                    <th>{{ jobnum }}</th>
+                </tr>
+                <tr>
+                    <td>Company/Client:</td>
+                    <td>{{ row.Company }}</td>
+                </tr>
+                <tr>
+                    <td>Description:</td>
+                    <td>{{ row.JobDescp }}</td>
+                </tr>
+                <tr>
+                    <td>Special Info.:</td>
+                    <td>{{ row.MeterInst }}</td>
+                </tr>
+                <tr>
+                    <td>Salesperson/CSR:</td>
+                    <td>{{ row.Remark }}</td>
+                </tr>
+                <tr>
+                    <td>Starting Drop Date:</td>
+                    <td>{{ row.DropDate }}</td>
+                </tr>
+                <tr>
+                    <td>Ending Drop Date:</td>
+                    <td>{{ row.ToDropDate }}</td>
+                </tr>
+                <tr>
+                    <td>Permit Number:</td>
+                    <td>{{ row.Permit }}</td>
+                </tr> 
+                <tr>
+                    <td>Total Pieces:</td>
+                    <td>{{ totjobcount|intcomma }}</td>
+                </tr> 
+            </table>
+            {% endfor %}
+        </div>
+        <h2>Patterns</h2>
+        <div>
+            <table>
+            {% for pat in patterns %}
+                <tr>
+                    <td><b>Pattern:</b></td>
+                    <td><b>{{ pat.jobpat }}</b></td>
+                    <td>{{ pat.DESCP1 }}</td>
+                    <td>{{ pat.DESCP2 }}</td>
+                    <td>{{ pat.MailClass }} / {{ pat.Payment }}</td>
+                    <td>{{ pat.total|intcomma }}</td>
+                </tr> 
+            {% endfor %}
+            </table>      
+        </div>
+        <script src="{% static 'jquery-3.1.1-dist/js/jquery-3.1.1.js' %}"></script>
+        <script src="{% static '/js/main.js' %}"></script>
+    </body>
+</html>
