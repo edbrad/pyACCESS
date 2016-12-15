@@ -1,5 +1,5 @@
 $(document).ready(function() {
-
+    console.log("document is ready!")
     // AJAX GET
     $('.get-more').click(function(){
 

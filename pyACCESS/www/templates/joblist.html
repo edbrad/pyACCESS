@@ -9,12 +9,33 @@
     </head>
     <body>
         <h1>pyACCESS - Job List</h1>
-        {% for row in rows %}
-          <section>
-            <p> {{ row.Jobnum }}</p>
-            <p> {{ row.Company }}</p>
-          </section>
-        {% endfor %}
-        <script src="{% static 'jquery/js/jquery-3.1.1.js' %}"></script>
+
+        <div>
+            <table style="width:100%">
+                <tr>
+                    <th>Job Number</th>
+                    <th>Company/Client</th>
+                    <th>Description</th>
+                    <th>Salesman/CSR</th>
+                    <th>Drop Start Date</th>
+                    <th>Drop End Date</th>
+                    <th>Permit</th>
+                </tr>
+                {% for row in rows %}
+                <tr>
+                    <td>{{ row.Jobnum }}</td>
+                    <td>{{ row.Company }}</td>
+                    <td>{{ row.JobDescp }}</td>
+                    <td>{{ row.Remark }}</td>
+                    <td>{{ row.DropDate }}</td>
+                    <td>{{ row.ToDropDate }}</td>
+                    <td>{{ row.Permit }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        
+        <script src="{% static 'jquery-3.1.1-dist/js/jquery-3.1.1.js' %}"></script>
+        <script src="{% static '/js/main.js' %}"></script>
     </body>
 </html>

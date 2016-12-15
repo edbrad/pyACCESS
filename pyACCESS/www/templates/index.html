@@ -10,11 +10,12 @@
     <body>
         <h1>pyACCESS</h1>
         <form action="/jobnum-search/" method="get">
+            {% csrf_token %}
             <label for="jobnum">Enter EMS Job Number: </label>
-            <input id="jobnum" type="text" name="jobnum" value="{{ jobnum }}">
+            <input id="jobsearch" type="text" name="jobnum" value="{{ jobnum }}" placeholder="9999-99">
             <input type="submit" value="OK">
         </form>
-        <script src="{% static 'jquery/js/jquery-3.1.1.js' %}"></script>
+        <script src="{% static 'jquery-3.1.1-dist/js/jquery-3.1.1.js' %}"></script>
+        <script src="{% static '/js/main.js' %}"></script>
     </body>
-    
 </html>
