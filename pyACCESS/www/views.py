@@ -1,10 +1,11 @@
 from django.shortcuts import render
 import pyodbc # Python ODBC Library (ACCESS 97 connectivity)
 
-# Create your views here.
+# root/job # search
 def index(request):
     return render(request, 'index.html')
 
+# display list of jobs (from index/search form GET)
 def joblist(request):
     jobnum = request.GET['jobnum']
     if jobnum == "":
@@ -15,8 +16,10 @@ def joblist(request):
         crsr.execute("SELECT * FROM Comp_Job where Jobnum like ?", (str(jobnum) + "%"))
         rows = crsr.fetchall()
         cnxn.close()
+        
     return render(request, 'joblist.html', {"rows": rows, "jobnum": jobnum})
 
+# display details for selected job number (from joblist)
 def jobdetails(request, jobnum):
     if jobnum == "":
         rows = None
@@ -41,11 +44,14 @@ def jobdetails(request, jobnum):
                               int(pat.cdig5bar) + int(pat.caadc) + int(pat.cmaadc) + int(pat.cbas3dig) +
                               int(pat.foreign) + int(pat.canadian))
                               
-            #pat.append(["total", total_pattern_count])
-            total_job_count = total_job_count +total_pattern_count
-             
+            # overwrite the NSA field (outdated) with the total piece count for the pattern
+            # types of <pyodbc.Row> do not expose an .append method
+            pat.lngNSAID = total_pattern_count
+
+            total_job_count = total_job_count + total_pattern_count
+
     return render(request, 'jobdetails.html', {"rows": rows, 
                                                "jobnum": jobnum, 
                                                "patterns": patterns,
-                                               "totpatcount": total_pattern_count,
-                                               "totjobcount": total_job_count})
+                                               "totjobcount": total_job_count
+                                               })
