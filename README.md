@@ -1,12 +1,14 @@
 # pyACCESS
-Django/Python MS ACCESS Data Access Demo Web Application
+Django/Python MS ACCESS Data Sharing Demo Web Application and Web Service
 
 The purpose of this application is to demonstrate the ability to externaly access the EMS Legacy MS ACCESS databases.  
 This application is built using **Django**, a *Python-based* Web application framework.
 
-This application currently utilizes the **pyodbc** Python library to connect and read from the MS Access Database (.mdb).
+This application currently utilizes the **pyodbc** Python library to connect and read from the MS Access Database (.mdb) via ODBC.
 
-This Application is being primarily developed and maintained in a **Windows** (Windows 10) environment using **Visual Studio Code** (VSCODE).
+This Application is being primarily developed and maintained in a **Windows** (Windows 10) environment using **Visual Studio Code** (VS Code).
+
+*Below is a journal of the development steps*
 
 ## Clone inital Github repository
 

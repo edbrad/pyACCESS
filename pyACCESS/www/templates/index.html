@@ -11,12 +11,16 @@
         <link rel="stylesheet" href="{% static 'css/main.css' %}">
     </head>
     <body>
-        <h1>EMS Job Ticket Explorer</h1>
-        <form action="/jobnum-search/" method="get">
+        <h1><b>EMS Job Ticket Explorer<b></h1>
+        <form class="form-inline" action="/jobnum-search/" method="get">
             {% csrf_token %}
-            <label for="jobnum">Enter a Full or Partial EMS Job Number: </label>
-            <input id="jobsearch" type="text" name="jobnum" value="{{ jobnum }}" placeholder="9999-99">
-            <input type="submit" value="SEARCH">
+            <div class="form-group row">
+                <label class="col-xs-12 col-form-label" for="jobnum">Enter a Full or Partial EMS Job Number: </label>
+                <div class="col-xs-12">
+                    <input class="form-control" id="jobsearch" type="text" name="jobnum" value="{{ jobnum }}" placeholder="9999-99">
+                    <input class="btn btn-primary" type="submit" value="SEARCH">
+                </div> 
+            </div>
         </form>    
         <!-- Third Party Javascript Libraries -->
         <script src="{% static 'jquery-3.1.1-dist/js/jquery-3.1.1.js' %}"></script>

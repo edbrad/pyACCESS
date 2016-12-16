@@ -12,14 +12,20 @@
         <link rel="stylesheet" href="{% static 'css/main.css' %}">
     </head>
     <body>
-        <h1>EMS Job List</h1>
-        <h3>Results From Search: &nbsp  "{{ jobnum }}"</h3>
-        <h2>Number of Found Jobs: &nbsp {{ rows|length|intcomma }}</h2>
+        <h1><b>EMS Job Ticket List</b></h1>
         <div>
-            <a href="/">BACK</a> 
+            Results From Search: &nbsp <b>"{{ jobnum }}"</b>
         </div>
         <div>
-            <table>
+            Number of Found Jobs: &nbsp <b>{{ rows|length|intcomma }}</b>
+        </div>
+        <br>
+        <div>
+            <a class="btn btn-primary" href="/">BACK</a>
+        </div>
+        <br>
+        <div>
+            <table class="table table-bordered table-striped table-condensed">
                 <tr>
                     <th>Job Number</th>
                     <th>Company/Client</th>
@@ -42,7 +48,7 @@
                 {% endfor %}
             </table>
             <div>
-                <a href="/">BACK</a> 
+                <a class="btn btn-primary" href="/">BACK</a> 
             </div>
         </div>
         <!-- Third Party Javascript Libraries -->

@@ -12,11 +12,11 @@
         <link rel="stylesheet" href="{% static 'css/main.css' %}">
     </head>
     <body>
-        <h1>Job Details</h1>
+        <h1><b>Job Ticket Details</b></h1>
         <h3>General Information</h3>
         <div>
             {% for row in rows %}
-            <table>
+            <table class="table table-bordered table-striped table-condensed">
                 <tr>
                     <th>Job Number:</th>
                     <th>{{ jobnum }}</th>
@@ -58,11 +58,17 @@
         </div>
         <h3>Pattern Details</h3>
         <div>
-            <table>
+            <table class="table table-bordered table-striped table-condensed">
+                <tr>
+                    <th>PATTERN</th>
+                    <th>Label</th>
+                    <th>Description</th>
+                    <th>Mail Class / Payment</th>
+                    <th>Quantity</th>
+                </tr>
             {% for pat in patterns %}
                 <tr>
-                    <td><b>Pattern:</b></td>
-                    <td><b>{{ pat.jobpat }}</b></td>
+                    <td><b>{{ pat.jobpat|upper }}</b></td>
                     <td>{{ pat.DESCP1 }}</td>
                     <td>{{ pat.DESCP2 }}</td>
                     <td>{{ pat.MailClass }} / {{ pat.Payment }}</td>
