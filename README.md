@@ -258,6 +258,10 @@ this maps to the app's **/static** folder (manually added).
 </html>
 ```
 
+The rendered *index* HTML
+
+![index.html](./images/index.html.png)
+
 Add the route to the url patterns (urls.py). standard *regular expressions* are used to map the incoming URL pattern
 to a View. in this case, any call to the root URL ("/") will route to the index View.
 ```python
@@ -291,5 +295,12 @@ crsr = cnxn.cursor()
 crsr.execute("SELECT * FROM Comp_Job where Jobnum = ?", (str(jobnum)))
 rows = crsr.fetchall()
 ```
+The rendered *joblist* HTML
+
+![joblist.html](./images/joblist.html.png)
+
+The rendered *jobdetails* HTML
+
+![jobdetails.html](./images/jobdetails.html.png)
 
 A similar pattern is repeated for the other views...

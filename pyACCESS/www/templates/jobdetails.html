@@ -68,7 +68,7 @@
                 </tr>
             {% for pat in patterns %}
                 <tr>
-                    <td><b>{{ pat.jobpat|upper }}</b></td>
+                    <td><a href="/pattern-details/{{ jobnum }}/{{ pat.jobpat }}"> <b>{{ pat.jobpat|upper }}</b></a></td>
                     <td>{{ pat.DESCP1 }}</td>
                     <td>{{ pat.DESCP2 }}</td>
                     <td>{{ pat.MailClass }} / {{ pat.Payment }}</td>

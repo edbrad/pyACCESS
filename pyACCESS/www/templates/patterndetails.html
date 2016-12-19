@@ -1,0 +1,23 @@
+{% load staticfiles %}
+{% load humanize %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>pyACCESS - EMS Job Ticket Explorer</title>
+        <!-- Third Party CSS Libraries -->
+        <link rel="stylesheet" href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap-3.3.7-dist/css/bootstrap-theme.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    </head>
+    <body>
+        <h1><b>Pattern Details</b></h1>
+        <P>{{ jobnum }}</p>
+        <p>{{ pattern }}</p>
+        <!-- Third Party Javascript Libraries -->
+        <script src="{% static 'jquery-3.1.1-dist/js/jquery-3.1.1.js' %}"></script>
+        <!-- Custom Javascript -->
+        <script src="{% static '/js/main.js' %}"></script>
+    </body>
+</html>

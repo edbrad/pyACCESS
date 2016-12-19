@@ -55,3 +55,7 @@ def jobdetails(request, jobnum):
                                                "patterns": patterns,
                                                "totjobcount": total_job_count
                                                })
+
+# display details for selected pattern (from jobdetails)
+def patterndetails(request, jobnum, pattern):
+    return render(request, 'patterndetails.html', {"jobnum": jobnum, "pattern": pattern})
