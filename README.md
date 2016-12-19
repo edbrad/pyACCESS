@@ -1,23 +1,24 @@
 # pyACCESS
-## **Django/Python MS ACCESS** Data Sharing Demo of a Web GUI (*Job TIcket Explorer*) and Web Service (*API*)
+## **Django/Python MS ACCESS 97** Data Sharing Demo of a Web GUI (*Job TIcket Explorer*) and Web Service (*API*)
 
-The purpose of this application is to demonstrate the ability to externaly access the EMS Legacy MS ACCESS databases and
+The purpose of this application is to demonstrate the ability to externaly access the EMS Legacy MS ACCESS 97 databases and
 serve data to other applications via a REST/HTTP API.
 
 The Web GUI is built using **Django**, a *Python-based* Web application framework (https://www.djangoproject.com/).
 
-The REST API is implemented using the Django REST Framework (http://www.django-rest-framework.org/)
+The REST API is implemented using the Django REST Framework (http://www.django-rest-framework.org/).
 
 This project currently utilizes the **pyodbc** Python library to connect and read from the MS Access Database (.mdb) via ODBC.
 
-This Application is being primarily developed and maintained in a **Windows** (Windows 10) environment using **Visual Studio Code** (VS Code).
+This Application is being primarily developed and maintained in a **Windows** (Windows 10) environment 
+using **Visual Studio Code** (VS Code) and Git for Windows.
 
-*Below is a journal of the development steps*
+## *Below is a journal of step-by-step notes from the development process*
 
-## Clone inital Github repository
-Create a new/empty project on the Github Web site with a minimal configuration
+## Create & Clone the inital Github repository
+Create a new/empty project on the Github Web site with a minimal configuration.
 
-Use the command line to clone the repo to the local folder (Windows 10)
+Use the command line to clone the repo to the local folder (Windows 10).
 ~~~~
 C:\py>git clone https://github.com/edbrad/pyACCESS.git
 Cloning into 'pyACCESS'...
@@ -27,10 +28,33 @@ remote: Total 8 (delta 1), reused 0 (delta 0), pack-reused 0
 Unpacking objects: 100% (8/8), done.
 ~~~~
 
+VS Code's Git intergration allows changes to be commited to the local repository.  Syncing the updates to the the remote
+Github repository requires issuing a subsequent Git **push** command from the command line.
+~~~~
+(venv) C:\py\pyACCESS>git push
+Counting objects: 5, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (5/5), done.
+Writing objects: 100% (5/5), 4.73 KiB | 0 bytes/s, done.
+Total 5 (delta 2), reused 0 (delta 0)
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+To https://github.com/edbrad/pyACCESS.git
+   705eee5..9b27bdb  master -> master
+~~~~
+
+To check the current status of the local repo and how it compares to the remote (Github) copy, issue 
+the Git **status** command from the command line.
+~~~~
+(venv) C:\py\pyACCESS>git status
+On branch master
+Your branch is ahead of 'origin/master' by 1 commit.
+  (use "git push" to publish your local commits)
+nothing to commit, working tree clean
+~~~~
+
 ## Create and Activate Python Virtual Environment 
 Limit the scope of the Application's dependent packages (the Application's "venv" folder in this case). 
 The *activate* script must be run to enable the created Virtual Environment.
-
 ~~~~
 C:\py>cd pyACCESS
 
@@ -47,7 +71,6 @@ C:\py\pyACCESS> venv\Scripts\activate
 
 ## Install Django Framework
 Use **Python package manager (pip)** to download and install the latest version of **Django**.
-
 ~~~~
 (venv) C:\py\pyACCESS>pip install django
 Collecting django
@@ -58,7 +81,6 @@ Successfully installed django-1.10.4
 
 ## Initialize the Django *Master* Project
 Create a Parent Project (pyACCESS) for the GUI and API Application(s). Test the initial functionality.
-
 ~~~~
 (venv) C:\py\pyACCESS>django-admin startproject pyACCESS
 ~~~~
@@ -87,15 +109,13 @@ a GUI for managing security/user access to the application.
 
 ## Create Web GUI App (www) within the Master Project
 Create the Web GUI Application under the parent Project.
-
 ~~~~
 (venv) C:\py\pyACCESS\pyACCESS>python manage.py startapp www
 ~~~~
 
 ## Register the new Web GUI App with Django
 Update the Django Project's *settings.py* file to register the new App (www). Note: the *..humanize* Django library is has been
-added for data filtering/formatting (commas, currency, etc..) 
-
+added for data filtering/formatting (commas, currency, etc..). 
 ```python
 # Application definition
 
@@ -112,7 +132,7 @@ INSTALLED_APPS = [
 ```
 
 ## Bootstrap new App
-Wire up code to display basic *home* Web page from GUI App.
+Wire up code to display basic *home* Web page from GUI App (www).
 
 **Add Python linting (pylint) support in Microsoft VS Code**: 
 *File --> Preferences --> Workspace Settings* (.vscode\settings.json).
@@ -139,7 +159,7 @@ def index(request):
 
 Create new *templates* folder under the App (www) folder to hold HTML template files (must be named "templates").
 
-Create a new **index.html** file in the new templates folder
+Create a new **index.html** file in the new templates folder.
 ```html
 <!DOCTYPE html>
 <html>
@@ -152,7 +172,7 @@ Create a new **index.html** file in the new templates folder
 </html>
 ```
 
-Create a **urls.py** file in the new App directory (www).
+Create a **urls.py** file in the new App directory (www). the *root* url will point to the *index* View.
 ```python
 from django.conf.urls import url
 from . import views
@@ -203,6 +223,8 @@ def index(request):
 Code the corresponding Django HTML template (templates/index.html) the folder must be named *"templates"* (manually added).
 static content (CSS, Javascript, Images) are accesed via the "{% load staticfiles %}" template element. 
 this maps to the app's **/static** folder (manually added).
+
+**Bootstrap** styling is added via classes applied to various HTML tags.
 ```html
 {% load staticfiles %}
 <!DOCTYPE html>
@@ -248,14 +270,13 @@ The **index** view contains a **HTML Form** to specify the job number (or partia
 The Form submits a **HTTP GET** request to the Django framework.  The GET request contains the job number as a 
 parameter (an embedded data field in the HTTP request, not as a visible part of the url displayed a browser address bar).
 The parameter data is parsed from the GET request data that was sent from the Form:
-
 ```python
 # display list of jobs (from index/search form GET)
 def joblist(request):
     jobnum = request.GET['jobnum']
 ```
 
-For url-based parameters, the values are passed into the View method as positional parameters
+For url-based parameters, the values are passed into the View method as positional parameters.
 ```python
 # display details for selected job number (from joblist)
 def jobdetails(request, jobnum):
@@ -272,5 +293,3 @@ rows = crsr.fetchall()
 ```
 
 A similar pattern is repeated for the other views...
-
-
