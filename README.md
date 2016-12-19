@@ -1,17 +1,23 @@
 # pyACCESS
-Django/Python MS ACCESS Data Sharing Demo Web Application and Web Service
+## **Django/Python MS ACCESS** Data Sharing Demo of a Web GUI (*Job TIcket Explorer*) and Web Service (*API*)
 
-The purpose of this application is to demonstrate the ability to externaly access the EMS Legacy MS ACCESS databases.  
-This application is built using **Django**, a *Python-based* Web application framework.
+The purpose of this application is to demonstrate the ability to externaly access the EMS Legacy MS ACCESS databases and
+serve data to other applications via a REST/HTTP API.
 
-This application currently utilizes the **pyodbc** Python library to connect and read from the MS Access Database (.mdb) via ODBC.
+The Web GUI is built using **Django**, a *Python-based* Web application framework (https://www.djangoproject.com/).
+
+The REST API is implemented using the Django REST Framework (http://www.django-rest-framework.org/)
+
+This project currently utilizes the **pyodbc** Python library to connect and read from the MS Access Database (.mdb) via ODBC.
 
 This Application is being primarily developed and maintained in a **Windows** (Windows 10) environment using **Visual Studio Code** (VS Code).
 
 *Below is a journal of the development steps*
 
 ## Clone inital Github repository
+Create a new/empty project on the Github Web site with a minimal configuration
 
+Use the command line to clone the repo to the local folder (Windows 10)
 ~~~~
 C:\py>git clone https://github.com/edbrad/pyACCESS.git
 Cloning into 'pyACCESS'...
@@ -40,7 +46,7 @@ C:\py\pyACCESS> venv\Scripts\activate
 ~~~~ 
 
 ## Install Django Framework
-Use Python package manager (pip) to download and install the latest version of **Django**.
+Use **Python package manager (pip)** to download and install the latest version of **Django**.
 
 ~~~~
 (venv) C:\py\pyACCESS>pip install django
@@ -50,8 +56,8 @@ Installing collected packages: django
 Successfully installed django-1.10.4
 ~~~~
 
-## Initialize Django Project
-Create a Parent Project (pyACCESS) for Application(s). Test the initial functionality.
+## Initialize the Django *Master* Project
+Create a Parent Project (pyACCESS) for the GUI and API Application(s). Test the initial functionality.
 
 ~~~~
 (venv) C:\py\pyACCESS>django-admin startproject pyACCESS
@@ -71,17 +77,26 @@ Starting development server at http://127.0.0.1:8000/
 Quit the server with CTRL-BREAK.
 ~~~~
 
-## Create first App within the Project
-Create the first (main) Application under the parent Project.
+## Enable the built-in Admin GUI Web site
+Create an inital *super user/admin* acccount which will be granted access to Django's admininstrative backend GUI.
+The GUI can used to visually manage Django controlled data (*not possible with the MS ACCESS Data!!!*).  It also provides
+a GUI for managing security/user access to the application.
+~~~~
+(venv) C:\py\pyACCESS\pyACCESS>python manage.py createsuperuser
+~~~~
+
+## Create Web GUI App (www) within the Master Project
+Create the Web GUI Application under the parent Project.
 
 ~~~~
 (venv) C:\py\pyACCESS\pyACCESS>python manage.py startapp www
 ~~~~
 
-## Register the new App with Django
-Update the Django Project's *settings.py* file to register the new App (www).
+## Register the new Web GUI App with Django
+Update the Django Project's *settings.py* file to register the new App (www). Note: the *..humanize* Django library is has been
+added for data filtering/formatting (commas, currency, etc..) 
 
-~~~~
+```python
 # Application definition
 
 INSTALLED_APPS = [
@@ -92,38 +107,40 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
 ]
-~~~~
+```
 
 ## Bootstrap new App
-Wire up code to display basic web page from App.
+Wire up code to display basic *home* Web page from GUI App.
 
-**Add Python linting (pylint) support in VS Code**: 
-
+**Add Python linting (pylint) support in Microsoft VS Code**: 
 *File --> Preferences --> Workspace Settings* (.vscode\settings.json).
 
-~~~~
+```json
 // Place your settings in this file to overwrite default and user settings.
 {
     "python.linting.pylintArgs": ["--load-plugins", "pylint_django"]
 }
-~~~~
+```
 
 **Add code for initial view**
-
+Each view is defined via a *Python Method*. The router passes the View Method the HTTP request 
+data.  The View Method acts upon the data and renders a web page via a HTML template.  The View Method can
+also pass data into the template to render of dynamic content (e.g. Database data).
 www\views.py
-~~~~
+```python
 from django.shortcuts import render
 
 # Create your views here.
 def index(request):
     return render(request, 'index.html')
-~~~~
+```
 
-create new *templates* folder under the App (www) folder to hold HTML template files (must be named "templates").
+Create new *templates* folder under the App (www) folder to hold HTML template files (must be named "templates").
 
-www\templates\index.html 
-~~~~
+Create a new **index.html** file in the new templates folder
+```html
 <!DOCTYPE html>
 <html>
     <head>
@@ -133,21 +150,22 @@ www\templates\index.html
         <h1>pyACCESS</h1>
     </body>
 </html>
-~~~~
+```
 
-create a urls.py file in the new App directory (www).
-~~~~
+Create a **urls.py** file in the new App directory (www).
+```python
 from django.conf.urls import url
 from . import views
 
 urlpatterns = [
     url(r'^$', views.index),
 ]
-~~~~
+```
 
-add a reference/link in the Project's url file (pyAccess\urls.py) to the new url file in the child App (www). 
-the *include* library must be referenced.
-~~~~
+Add a reference/link in the Master/Parent Project's url file (pyAccess\urls.py) to the new url file in the child App (www). 
+the *include* library must be referenced. This allows for better code organization, allowing the related url patterns to be defined in a file that is 
+along side the other files that make up the given app ("\www\urls.py" for this app).
+```python
 from django.conf.urls import include, url
 from django.contrib import admin
 
@@ -155,11 +173,11 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include('www.urls')),
 ]
-~~~~
+```
 
-## Add MS Jet/ACCESS support (pyodbc)
+## Add the Python MS Jet/ACCESS (ODBC) support library (pyodbc)
 
-install pyodbc library (pip).  
+Install pyodbc library (via pip).  
 ~~~~
 (venv) C:\py\pyACCESS>pip install pyodbc
 Collecting pyodbc
@@ -168,10 +186,91 @@ Installing collected packages: pyodbc
 Successfully installed pyodbc-3.1.1
 ~~~~
 
-import the library (in pyACCESS\views.py)
-~~~~
+Import the library into the code (in pyACCESS\views.py)
+```python
 import pyodbc # Python ODBC Library (ACCESS 97 connectivity)
-~~~~
+```
 
+## Create first/home Page View (index)
+
+Code View code (views.py)
+```python
+# root/job # search
+def index(request):
+    return render(request, 'index.html')
+```
+
+Code the corresponding Django HTML template (templates/index.html) the folder must be named *"templates"* (manually added).
+static content (CSS, Javascript, Images) are accesed via the "{% load staticfiles %}" template element. 
+this maps to the app's **/static** folder (manually added).
+```html
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>pyACCESS - EMS Job Ticket Explorer</title>
+        <!-- Third Party CSS Libraries -->
+        <link rel="stylesheet" href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap-3.3.7-dist/css/bootstrap-theme.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    </head>
+    <body>
+        <h1><b>EMS Job Ticket Explorer<b></h1>
+        <form class="form-inline" action="/jobnum-search/" method="get">
+            {% csrf_token %}
+            <div class="form-group row">
+                <label class="col-xs-12 col-form-label" for="jobnum">Enter a Full or Partial EMS Job Number: </label>
+                <div class="col-xs-12">
+                    <input class="form-control" id="jobsearch" type="text" name="jobnum" value="{{ jobnum }}" placeholder="9999-99">
+                    <input class="btn btn-primary" type="submit" value="SEARCH">
+                </div> 
+            </div>
+        </form>    
+        <!-- Third Party Javascript Libraries -->
+        <script src="{% static 'jquery-3.1.1-dist/js/jquery-3.1.1.js' %}"></script>
+        <!-- Custom Javascript -->
+        <script src="{% static '/js/main.js' %}"></script>
+    </body>
+</html>
+```
+
+Add the route to the url patterns (urls.py). standard *regular expressions* are used to map the incoming URL pattern
+to a View. in this case, any call to the root URL ("/") will route to the index View.
+```python
+urlpatterns = [
+    url(r'^$', views.index),
+]
+```
+
+The **index** view contains a **HTML Form** to specify the job number (or partial number) to search for in the Database.  
+The Form submits a **HTTP GET** request to the Django framework.  The GET request contains the job number as a 
+parameter (an embedded data field in the HTTP request, not as a visible part of the url displayed a browser address bar).
+The parameter data is parsed from the GET request data that was sent from the Form:
+
+```python
+# display list of jobs (from index/search form GET)
+def joblist(request):
+    jobnum = request.GET['jobnum']
+```
+
+For url-based parameters, the values are passed into the View method as positional parameters
+```python
+# display details for selected job number (from joblist)
+def jobdetails(request, jobnum):
+```
+
+The job number is used by the *joblist* view to query the legacy MS Access 97 Database (via ODBC). The query is executed from a string containing
+a standard SQL statement.  The data is returned in the form of a cursor that can be iterated upon to retrieve the data rows.
+```python
+# get info for the selected Job #
+cnxn = pyodbc.connect(r"Driver={Microsoft Access Driver (*.mdb)};Dbq=C:\\data\\mdb\\Jtk2002_Data.mdb;")
+crsr = cnxn.cursor()
+crsr.execute("SELECT * FROM Comp_Job where Jobnum = ?", (str(jobnum)))
+rows = crsr.fetchall()
+```
+
+A similar pattern is repeated for the other views...
 
 
