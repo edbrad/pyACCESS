@@ -15,6 +15,7 @@ def joblist(request):
         crsr = cnxn.cursor()
         crsr.execute("SELECT * FROM Comp_Job where Jobnum like ?", (str(jobnum) + "%"))
         rows = crsr.fetchall()
+
         cnxn.close()
         
     return render(request, 'joblist.html', {"rows": rows, "jobnum": jobnum})
@@ -28,12 +29,23 @@ def jobdetails(request, jobnum):
         cnxn = pyodbc.connect(r"Driver={Microsoft Access Driver (*.mdb)};Dbq=C:\\data\\mdb\\Jtk2002_Data.mdb;")
         crsr = cnxn.cursor()
         crsr.execute("SELECT * FROM Comp_Job where Jobnum = ?", (str(jobnum)))
-        rows = crsr.fetchall()
+        job = crsr.fetchone()
         
         # get pattern info for the selected Job 
         crsr_2 = cnxn.cursor()
         crsr_2.execute("SELECT * FROM [Job Details] where jobnum = ?", (str(jobnum)))
         patterns = crsr_2.fetchall()
+
+        # get the Company address for the Job Number
+        crsr_3 = cnxn.cursor()
+        crsr_3.execute("SELECT * FROM COMPANY where Comp = ? AND Contact = ?", (str(job.Company), str(job.Contact)))
+        company = crsr_3.fetchone()
+        # clean/reformat Company fields for better display
+        if company.Add2 == None:
+            company.Add2 = " "
+        if company.phone == None:
+            company.phone = " "
+
         cnxn.close()
         
         total_pattern_count = 0
@@ -50,12 +62,32 @@ def jobdetails(request, jobnum):
 
             total_job_count = total_job_count + total_pattern_count
 
-    return render(request, 'jobdetails.html', {"rows": rows, 
-                                               "jobnum": jobnum, 
+    return render(request, 'jobdetails.html', {"jobnum": jobnum, 
                                                "patterns": patterns,
-                                               "totjobcount": total_job_count
+                                               "totjobcount": total_job_count,
+                                               "job": job,
+                                               "company": company
                                                })
 
 # display details for selected pattern (from jobdetails)
 def patterndetails(request, jobnum, pattern):
-    return render(request, 'patterndetails.html', {"jobnum": jobnum, "pattern": pattern})
+    if (jobnum == "" or pattern == ""):
+        patterns = None
+    else:
+        # get pattern info for the selected Job #
+        cnxn = pyodbc.connect(r"Driver={Microsoft Access Driver (*.mdb)};Dbq=C:\\data\\mdb\\Jtk2002_Data.mdb;")
+        crsr_2 = cnxn.cursor()
+        crsr_2.execute("SELECT * FROM [Job Details] where jobnum = ? AND jobpat = ?", (str(jobnum), str(pattern)))
+        patterns = crsr_2.fetchall()
+
+        cnxn.close()
+
+        total_pattern_count = 0
+        for pat in patterns:
+            total_pattern_count = (int(pat.PackShip) + int(pat.cbas) + int(pat.cpre) + int(pat.ccrt) +
+                                  int(pat.cwalk125) + int(pat.csat) + int(pat.cbasbar) + int(pat.cdig3bar) +
+                                  int(pat.cdig5bar) + int(pat.caadc) + int(pat.cmaadc) + int(pat.cbas3dig) +
+                                  int(pat.foreign) + int(pat.canadian))   
+
+    return render(request, 'patterndetails.html', {"patterns": patterns, "jobnum": jobnum, "pattern": pattern, 
+                           'patterntotal': total_pattern_count})

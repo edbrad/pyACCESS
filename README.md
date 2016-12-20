@@ -1,5 +1,5 @@
 # pyACCESS
-## **Django/Python MS ACCESS 97** Data Sharing Demo of a Web GUI (*Job TIcket Explorer*) and Web Service (*API*)
+## **Django/Python MS ACCESS 97** Data Sharing Demo of a Web GUI (*EMS Job TIcket Explorer*) and Web Service (*API*)
 
 The purpose of this application is to demonstrate the ability to externaly access the EMS Legacy MS ACCESS 97 databases and
 serve data to other applications via a REST/HTTP API.
@@ -239,17 +239,19 @@ this maps to the app's **/static** folder (manually added).
         <link rel="stylesheet" href="{% static 'css/main.css' %}">
     </head>
     <body>
-        <h1><b>EMS Job Ticket Explorer<b></h1>
-        <form class="form-inline" action="/jobnum-search/" method="get">
-            {% csrf_token %}
-            <div class="form-group row">
-                <label class="col-xs-12 col-form-label" for="jobnum">Enter a Full or Partial EMS Job Number: </label>
-                <div class="col-xs-12">
-                    <input class="form-control" id="jobsearch" type="text" name="jobnum" value="{{ jobnum }}" placeholder="9999-99">
-                    <input class="btn btn-primary" type="submit" value="SEARCH">
-                </div> 
-            </div>
-        </form>    
+        <div align="center" class="jobsearch_form">
+            <h1><b>EMS Job Ticket Explorer<b></h1>
+            <form class="form-inline" action="/jobnum-search/" method="get">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="col-md-12 col-form-label" for="jobnum">Enter a Full or Partial EMS Job Number: </label>
+                    <div class="col-md-12">
+                        <input class="form-control" id="jobsearch" type="text" name="jobnum" value="{{ jobnum }}" placeholder="9999-99">
+                        <input class="btn btn-primary" type="submit" value="SEARCH">
+                    </div> 
+                </div>
+            </form>
+        </div>    
         <!-- Third Party Javascript Libraries -->
         <script src="{% static 'jquery-3.1.1-dist/js/jquery-3.1.1.js' %}"></script>
         <!-- Custom Javascript -->
@@ -260,7 +262,7 @@ this maps to the app's **/static** folder (manually added).
 
 The rendered *index* HTML
 
-![index.html](./images/index.html.png)
+![index.html](./images/www/index.html.png)
 
 Add the route to the url patterns (urls.py). standard *regular expressions* are used to map the incoming URL pattern
 to a View. in this case, any call to the root URL ("/") will route to the index View.
@@ -297,10 +299,36 @@ rows = crsr.fetchall()
 ```
 The rendered *joblist* HTML
 
-![joblist.html](./images/joblist.html.png)
+![joblist.html](./images/www/joblist.html.png)
 
 The rendered *jobdetails* HTML
 
-![jobdetails.html](./images/jobdetails.html.png)
+![jobdetails.html](./images/www/jobdetails.html.png)
+
+The rendered *patterndetails* HTML
+
+![index.html](./images/www/patterndetails.html.png)
 
 A similar pattern is repeated for the other views...
+
+## Allow access to the Django built-in development HTTP Server from a remote machine
+
+By the default, the Django HTTP server, meant for development/testing is only accessible from the local 
+machine (127.0.0.1, locahost).  To allow remote computers to access the Web server, there are two 
+configuration changes that are needed
+
+Update the allowed hosts to "*" (**settings.py**)
+```Python
+ALLOWED_HOSTS = ['*']
+```
+Specify an IP address of "0.0.0.0" when issuing the Django **runserver** command
+~~~~
+(venv) C:\py\pyACCESS\pyACCESS>python manage.py runserver 0.0.0.0:8000
+Performing system checks...
+
+System check identified no issues (0 silenced).
+December 19, 2016 - 10:27:48
+Django version 1.10.4, using settings 'pyACCESS.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CTRL-BREAK.
+~~~~

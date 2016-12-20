@@ -7,14 +7,490 @@
         <!-- Third Party CSS Libraries -->
         <link rel="stylesheet" href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.min.css' %}">
         <link rel="stylesheet" href="{% static 'bootstrap-3.3.7-dist/css/bootstrap-theme.min.css' %}">
+        <link rel="stylesheet" href="{% static 'font-awesome-4.7.0/css/font-awesome.min.css' %}">
         <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
         <!-- Custom CSS -->
         <link rel="stylesheet" href="{% static 'css/main.css' %}">
     </head>
     <body>
-        <h1><b>Pattern Details</b></h1>
-        <P>{{ jobnum }}</p>
-        <p>{{ pattern }}</p>
+        <h1><b>Pattern Details [ <a href="/job-details/{{ jobnum }}">{{ jobnum }} {{ pattern|upper }}</a> ]</b></h1>
+        <div class="row col-sm-6">
+            <table class="table table-bordered table-condensed">
+                <tr>
+                    <td><b>Job Number:</b></td>
+                    <td>{{ jobnum }}</td>
+                    <td><b>Pattern:</b></td>
+                    <td>{{ pattern|upper }}</td>
+                </tr>
+                {% for pat in patterns %}
+                <tr>
+                    <td><b>Mail Classs:</b></td>
+                    <td>{{ pat.MailClass }}</td>
+                    <td><b>Payment Method:</b></td>
+                    <td>{{ pat.Payment }}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td><b>Total Pieces:</b></td>
+                    <td>{{ patterntotal|intcomma }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <!-- Description Lines -->
+        <div class="row col-sm-12">
+            <p><b>Description:</b><p>
+            <table class="table table-condensed">
+                {% for pat in patterns %}
+                <tr>
+                    <td>{{ pat.DESCP1 }}</td>
+                </tr>
+                {% if pat.DESCP2 != None %}
+                <tr>
+                    <td>{{ pat.DESCP2 }}</td>
+                </tr>
+                {% endif %}
+                {% if pat.DESCP3 != None %}
+                <tr>
+                    <td>{{ pat.DESCP3 }}</td>
+                </tr>
+                {% endif %}
+                {% if pat.DESCP4 != None %}
+                <tr>
+                    <td>{{ pat.DESCP4 }}</td>
+                </tr>
+                {% endif %}
+                {% if pat.DESCP5 != None %}
+                <tr>
+                    <td>{{ pat.DESCP5 }}</td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </table>
+        </div>
+        <!-- Presort Counts -->
+        <div class="row col-sm-6">
+            <h3>Postal Counts</h3>
+            <table class="table table-bordered table-striped table-condensed">
+                {% for pat in patterns %}
+                <tr>
+                    <th>AUTOMATION</th>
+                    <th>Qty.</th>
+                    <th>NON-AUTOMATION</th>
+                    <th>Qty.</th>
+                </tr>
+                <tr>
+                    <td>5-Digit Auto:</td>
+                    <td>{{ pat.cdig5bar |floatformat|intcomma }}</td>
+                    <td>Machinable 5-Digit:</td>
+                    <td>{{ pat.cbasbar|floatformat|intcomma }}</td>
+                </tr>
+                <tr>
+                    <td>3-Digit Auto:</td>
+                    <td>{{pat.cdig3bar|floatformat|intcomma }}</td>
+                    <td>Machinable 3-digit:</td>
+                    <td>{{ pat.cbas3dig|floatformat|intcomma }}</td>
+                </tr>
+                <tr>
+                    <td>Automated ADC/AADC:</td>
+                    <td>{{ pat.caadc|floatformat|intcomma }}</td>
+                    <td>Machinable ADC/AADC:</td>
+                    <td>{{ pat.cpre|floatformat|intcomma }}</td>
+                </tr>
+                <tr>
+                    <td>Automated MADC/MAADC:</td>
+                    <td>{{ pat.cmaadc|floatformat|intcomma }}</td>
+                    <td>Machinable MADC/MAADC:</td>
+                    <td>{{ pat.cbas|floatformat|intcomma }}</td>
+                </tr>
+                <tr>
+                    <td>High Density Enhanced CAR-RT:</td>
+                    <td>{{ pat.cwalk125|floatformat|intcomma }}</td>
+                     <td>Basic CAR-RT:</td>
+                    <td>{{ pat.ccrt|floatformat|intcomma }}</td>
+                </tr>
+                <tr>
+                    <td>Saturation Enhanced CAR-RT:</td>
+                    <td>{{ pat.csat|floatformat|intcomma }}</td>
+                    <td>Pack and Ship/Estimate:</td>
+                    <td>{{ pat.PackShip|floatformat|intcomma }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            <!-- Foreign/Canadian Counts -->
+            {% if pat.Foreign != None or pat.Canadian != None %}
+            <table class="table table-bordered table-striped table-condensed">
+                {% for pat in patterns %}
+                <tr>
+                    <th>NON-U.S.A. Mail</th>
+                    <th>Qty.</th>
+                </tr>
+                <tr>
+                    <td>Foreign</td>
+                    <td>{{ pat.foreign|floatformat|intcomma }}</td>
+                </tr>
+                <tr>
+                    <td>Canadian</td>
+                    <td>{{ pat.canadian|floatformat|intcomma }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% endif %}
+        </div>
+        <div class="row col-sm-9">
+            <h3>Mail Piece Components</h3>
+            {% for pat in patterns %}
+             <!-- PostCard or Self Mailer -->
+            {% if pat.PostName1 != None or pat.PostCode1 != None or pat.PostNote1 != None %}
+            <table class="table table-bordered table-condensed">
+                <tr>
+                    <th>POSTCARD / SELF MAILER</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <th>Code</th>
+                    <th>Note</th>
+                </tr>
+                <tr>
+                    <td>{{ pat.PostName1 }}</td>
+                    <td>{{ pat.PostCode1 }}</td>
+                    <td>{{ pat.PostNote1 }}</td>
+                </tr>
+            </table>
+            {% endif %}
+            {% if pat.OuterName != None or pat.OuterCode != None or pat.OuterNote != None %}
+            <table class="table table-bordered table-condensed">
+                <tr>
+                    <th>OUTER ENVELOPE</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <th>Code</th>
+                    <th>Note</th>
+                </tr>
+                <tr>
+                    {% if pat.OuterName != None %}
+                        <td>{{ pat.OuterName }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                    {% if pat.OuterCode != None %}
+                        <td>{{ pat.OuterCode }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                    {% if pat.OuterNote != None %}
+                        <td>{{ pat.OuterNote }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                </tr>
+            </table>
+            {% endif %}
+            {% if pat.Insert1Name != None or pat.Insert1Code != None or pat.Insert1Note != None %}
+            <table class="table table-bordered table-condensed">
+                <tr>
+                    <th>INSERTS</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <th>Code</th>
+                    <th>Note</th>
+                </tr>
+                <tr>
+                     {% if pat.Insert1Name != None %}
+                        <td>{{ pat.Insert1Name }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                    {% if pat.Insert1Code != None %}
+                        <td>{{ pat.Insert1Code }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                    {% if pat.Insert1Note != None %}
+                        <td>{{ pat.Insert1Note }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                </tr>
+            {% endif %}
+            {% if pat.Insert2Name != None or pat.Insert2Code != None or pat.Insert2Note != None %}
+                <tr>
+                    {% if pat.Insert2Name != None %}
+                        <td>{{ pat.Insert2Name }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                    {% if pat.Insert2Code != None %}
+                        <td>{{ pat.Insert2Code }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                    {% if pat.Insert2Note != None %}
+                        <td>{{ pat.Insert2Note }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                </tr>
+            {% endif %}
+            {% if pat.Insert3Name != None or pat.Insert3Code != None or pat.Insert3Note != None %}
+                <tr>
+                    {% if pat.Insert3Name != None %}
+                        <td>{{ pat.Insert3Name }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                    {% if pat.Insert3Code != None %}
+                        <td>{{ pat.Insert3Code }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                    {% if pat.Insert3Note != None %}
+                        <td>{{ pat.Insert3Note }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                </tr>
+            {% endif %}
+            {% if pat.Insert4Name != None or pat.Insert4Code != None or pat.Insert4Note != None %}
+                <tr>
+                    {% if pat.Insert4Name != None %}
+                        <td>{{ pat.Insert4Name }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                    {% if pat.Insert4Code != None %}
+                        <td>{{ pat.Insert4Code }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                    {% if pat.Insert4Note != None %}
+                        <td>{{ pat.Insert4Note }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                </tr>
+            {% endif %}
+            {% if pat.Insert5Name != None or pat.Insert5Code != None or pat.Insert5Note != None %}
+                <tr>
+                    {% if pat.Insert5Name != None %}
+                        <td>{{ pat.Insert5Name }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                    {% if pat.Insert5Code != None %}
+                        <td>{{ pat.Insert5Code }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                    {% if pat.Insert5Note != None %}
+                        <td>{{ pat.Insert5Note }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                </tr>
+            {% endif %}
+            {% if pat.Insert6Name != None or pat.Insert6Code != None or pat.Insert6Note != None %}
+                <tr>
+                    {% if pat.Insert6Name != None %}
+                        <td>{{ pat.Insert6Name }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                    {% if pat.Insert6Code != None %}
+                        <td>{{ pat.Insert6Code }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                    {% if pat.Insert6Note != None %}
+                        <td>{{ pat.Insert6Note }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                </tr>
+            {% endif %}
+            {% if pat.Insert7Name != None or pat.Insert7Code != None or pat.Insert7Note != None %}
+                <tr>
+                    {% if pat.Insert7Name != None %}
+                        <td>{{ pat.Insert7Name }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                    {% if pat.Insert7Code != None %}
+                        <td>{{ pat.Insert7Code }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                    {% if pat.Insert7Note != None %}
+                        <td>{{ pat.Insert7Note }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                </tr>
+            {% endif %}
+            {% if pat.Insert8Name != None or pat.Insert8Code != None or pat.Insert8Note != None %}
+                <tr>
+                    {% if pat.Insert8Name != None %}
+                        <td>{{ pat.Insert8Name }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                    {% if pat.Insert8Code != None %}
+                        <td>{{ pat.Insert8Code }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                    {% if pat.Insert8Note != None %}
+                        <td>{{ pat.Insert8Note }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                </tr>
+            {% endif %}
+            {% if pat.Insert9Name != None or pat.Insert9Code != None or pat.Insert9Note != None %}
+                <tr>
+                    {% if pat.Insert9Name != None %}
+                        <td>{{ pat.Insert9Name }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                    {% if pat.Insert9Code != None %}
+                        <td>{{ pat.Insert9Code }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                    {% if pat.Insert9Note != None %}
+                        <td>{{ pat.Insert9Note }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                </tr>
+            {% endif %}
+            {% if pat.Insert10Name != None or pat.Insert10Code != None or pat.Insert10Note != None %}
+                <tr>
+                    {% if pat.Insert10Name != None %}
+                        <td>{{ pat.Insert10Name }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                    {% if pat.Insert10Code != None %}
+                        <td>{{ pat.Insert10Code }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                    {% if pat.Insert10Note != None %}
+                        <td>{{ pat.Insert10Note }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                </tr>
+            {% endif %}
+            {% if pat.Insert11Name != None or pat.Insert11Code != None or pat.Insert11Note != None %}
+                <tr>
+                    {% if pat.Insert11Name != None %}
+                        <td>{{ pat.Insert10Name }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                    {% if pat.Insert11Code != None %}
+                        <td>{{ pat.Insert10Code }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                    {% if pat.Insert11Note != None %}
+                        <td>{{ pat.Insert10Note }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                </tr>
+            {% endif %}
+            {% if pat.Insert12Name != None or pat.Insert12Code != None or pat.Insert12Note != None %}
+                <tr>
+                    {% if pat.Insert12Name != None %}
+                        <td>{{ pat.Insert12Name }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                    {% if pat.Insert12Code != None %}
+                        <td>{{ pat.Insert12Code }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                    {% if pat.Insert12Note != None %}
+                        <td>{{ pat.Insert12Note }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                </tr>
+            {% endif %}
+            {% if pat.Insert13Name != None or pat.Insert13Code != None or pat.Insert13Note != None %}
+                <tr>
+                    {% if pat.Insert13Name != None %}
+                        <td>{{ pat.Insert13Name }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                    {% if pat.Insert13Code != None %}
+                        <td>{{ pat.Insert13Code }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                    {% if pat.Insert13Note != None %}
+                        <td>{{ pat.Insert13Note }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                </tr>
+            {% endif %}
+            {% if pat.Insert14Name != None or pat.Insert14Code != None or pat.Insert14Note != None %}
+                <tr>
+                    {% if pat.Insert14Name != None %}
+                        <td>{{ pat.Insert14Name }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                    {% if pat.Insert14Code != None %}
+                        <td>{{ pat.Insert14Code }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                    {% if pat.Insert14Note != None %}
+                        <td>{{ pat.Insert14Note }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                </tr>
+            {% endif %}
+            {% if pat.Insert15Name != None or pat.Insert15Code != None or pat.Insert15Note != None %}
+                <tr>
+                    {% if pat.Insert15Name != None %}
+                        <td>{{ pat.Insert15Name }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                    {% if pat.Insert15Code != None %}
+                        <td>{{ pat.Insert15Code }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                    {% if pat.Insert15Note != None %}
+                        <td>{{ pat.Insert15Note }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+                </tr>
+            {% endif %}
+            {% endfor %}
+        </table>
+        </div>
         <!-- Third Party Javascript Libraries -->
         <script src="{% static 'jquery-3.1.1-dist/js/jquery-3.1.1.js' %}"></script>
         <!-- Custom Javascript -->
