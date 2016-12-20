@@ -1,5 +1,6 @@
 from django.shortcuts import render
 import pyodbc # Python ODBC Library (ACCESS 97 connectivity)
+import re # Python regular expressions library
 
 # root/job # search
 def index(request):
@@ -45,6 +46,8 @@ def jobdetails(request, jobnum):
             company.Add2 = " "
         if company.phone == None:
             company.phone = " "
+        if company.phone != None:
+            company.phone = format_phone(company.phone)
 
         cnxn.close()
         
@@ -91,3 +94,12 @@ def patterndetails(request, jobnum, pattern):
 
     return render(request, 'patterndetails.html', {"patterns": patterns, "jobnum": jobnum, "pattern": pattern, 
                            'patterntotal': total_pattern_count})
+
+
+# reformat phone numbers
+def format_phone(phone_number):
+    # strip non-numeric characters
+    phone = re.sub(r'\D', '', phone_number)
+    # remove leading 1 (area codes never start with 1)
+    phone = phone.lstrip('1')
+    return '({}) {}-{}'.format(phone[0:3], phone[3:6], phone[6:])
