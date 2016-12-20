@@ -33,7 +33,7 @@
                     <td></td>
                     <td></td>
                     <td><b>Total Pieces:</b></td>
-                    <td>{{ patterntotal|intcomma }}</td>
+                    <td><b>{{ patterntotal|intcomma }}</b></td>
                 </tr>
                 {% endfor %}
             </table>
@@ -82,39 +82,39 @@
                 </tr>
                 <tr>
                     <td>5-Digit Auto:</td>
-                    <td>{{ pat.cdig5bar |floatformat|intcomma }}</td>
+                    <td><b>{{ pat.cdig5bar |floatformat|intcomma }}</b></td>
                     <td>Machinable 5-Digit:</td>
-                    <td>{{ pat.cbasbar|floatformat|intcomma }}</td>
+                    <td><b>{{ pat.cbasbar|floatformat|intcomma }}</b></td>
                 </tr>
                 <tr>
                     <td>3-Digit Auto:</td>
-                    <td>{{pat.cdig3bar|floatformat|intcomma }}</td>
+                    <td><b>{{pat.cdig3bar|floatformat|intcomma }}</b></td>
                     <td>Machinable 3-digit:</td>
-                    <td>{{ pat.cbas3dig|floatformat|intcomma }}</td>
+                    <td><b>{{ pat.cbas3dig|floatformat|intcomma }}</b></td>
                 </tr>
                 <tr>
                     <td>Automated ADC/AADC:</td>
-                    <td>{{ pat.caadc|floatformat|intcomma }}</td>
+                    <td><b>{{ pat.caadc|floatformat|intcomma }}</b></td>
                     <td>Machinable ADC/AADC:</td>
-                    <td>{{ pat.cpre|floatformat|intcomma }}</td>
+                    <td><b>{{ pat.cpre|floatformat|intcomma }}</b></td>
                 </tr>
                 <tr>
                     <td>Automated MADC/MAADC:</td>
-                    <td>{{ pat.cmaadc|floatformat|intcomma }}</td>
+                    <td><b>{{ pat.cmaadc|floatformat|intcomma }}</b></td>
                     <td>Machinable MADC/MAADC:</td>
-                    <td>{{ pat.cbas|floatformat|intcomma }}</td>
+                    <td><b>{{ pat.cbas|floatformat|intcomma }}</b></td>
                 </tr>
                 <tr>
                     <td>High Density Enhanced CAR-RT:</td>
-                    <td>{{ pat.cwalk125|floatformat|intcomma }}</td>
+                    <td><b>{{ pat.cwalk125|floatformat|intcomma }}</b></td>
                      <td>Basic CAR-RT:</td>
-                    <td>{{ pat.ccrt|floatformat|intcomma }}</td>
+                    <td><b>{{ pat.ccrt|floatformat|intcomma }}</b></td>
                 </tr>
                 <tr>
                     <td>Saturation Enhanced CAR-RT:</td>
-                    <td>{{ pat.csat|floatformat|intcomma }}</td>
+                    <td><b>{{ pat.csat|floatformat|intcomma }}</b></td>
                     <td>Pack and Ship/Estimate:</td>
-                    <td>{{ pat.PackShip|floatformat|intcomma }}</td>
+                    <td><b>{{ pat.PackShip|floatformat|intcomma }}</b></td>
                 </tr>
                 {% endfor %}
             </table>
@@ -128,11 +128,11 @@
                 </tr>
                 <tr>
                     <td>Foreign</td>
-                    <td>{{ pat.foreign|floatformat|intcomma }}</td>
+                    <td><b>{{ pat.foreign|floatformat|intcomma }}</b></td>
                 </tr>
                 <tr>
                     <td>Canadian</td>
-                    <td>{{ pat.canadian|floatformat|intcomma }}</td>
+                    <td><b>{{ pat.canadian|floatformat|intcomma }}</b></td>
                 </tr>
                 {% endfor %}
             </table>
