@@ -42,12 +42,13 @@ def jobdetails(request, jobnum):
         crsr_3.execute("SELECT * FROM COMPANY where Comp = ? AND Contact = ?", (str(job.Company), str(job.Contact)))
         company = crsr_3.fetchone()
         # clean/reformat Company fields for better display
-        if company.Add2 == None:
-            company.Add2 = " "
-        if company.phone == None:
-            company.phone = " "
-        if company.phone != None:
-            company.phone = format_phone(company.phone)
+        if company:
+            if company.Add2 == None:
+                company.Add2 = " "
+            if company.phone == None:
+                company.phone = " "
+            if company.phone != None and company.phone != " ":
+                company.phone = format_phone(company.phone)
 
         cnxn.close()
         

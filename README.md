@@ -1,19 +1,29 @@
 # pyACCESS
-## **Django/Python MS ACCESS 97** Data Sharing Demo of a Web GUI (*EMS Job TIcket Explorer*) and Web Service (*API*)
+## **Django/Python MS ACCESS 97** Data Sharing Demo of a Web GUI (*EMS Job Ticket Explorer*) and Web Service (*API*)
 
 The purpose of this application is to demonstrate the ability to externaly access the EMS Legacy MS ACCESS 97 databases and
-serve data to other applications via a REST/HTTP API.
+serve data to other, more modern, applications via a REST/HTTP API.
 
 The Web GUI is built using **Django**, a *Python-based* Web application framework (https://www.djangoproject.com/).
 
 The REST API is implemented using the Django REST Framework (http://www.django-rest-framework.org/).
 
-This project currently utilizes the **pyodbc** Python library to connect and read from the MS Access Database (.mdb) via ODBC.
+This project currently utilizes the **pyodbc** Python library (https://mkleehammer.github.io/pyodbc/) to connect and read from the MS Access Database (.mdb) via ODBC.
 
 This Application is being primarily developed and maintained in a **Windows** (Windows 10) environment 
-using **Visual Studio Code** (VS Code) and Git for Windows.
+using **Visual Studio Code** (VS Code) and **Git** for Windows.
 
-## *Below is a journal of step-by-step notes from the development process*
+### *Below is a journal of step-by-step notes from the development process:*
+
+## Windows Environment Notes
+To avoid permission errors/issues when installing Python Tools and Packages from the command line, a Windows command line shortcut 
+must be created and configured to "Run as administrator"
+
+![Run command line as administrator](./images/www/cl_run_as_admin.png)
+
+The same must be done with the **Visual Studio Code** shortcut.
+
+![Run VS Code as administrator](./images/www/vs_run_as_admin.png)
 
 ## Create & Clone the inital Github repository
 Create a new/empty project on the Github Web site with a minimal configuration.
@@ -134,7 +144,7 @@ INSTALLED_APPS = [
 ## Bootstrap new App
 Wire up code to display basic *home* Web page from GUI App (www).
 
-**Add Python linting (pylint) support in Microsoft VS Code**: 
+**Add Python linting (pylint) support in Microsoft Visual Studio Code**: 
 *File --> Preferences --> Workspace Settings* (.vscode\settings.json).
 
 ```json

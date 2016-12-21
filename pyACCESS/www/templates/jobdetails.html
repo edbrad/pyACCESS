@@ -24,9 +24,13 @@
                 </tr>
                 <tr>
                     <td><b>Company/Contact:</b></td>
-                    <td>{{ company.Comp }}<br>{{ company.Contact }}<br>
-                    {{company.Add1}} {{company.Add2}}<br>{{company.City}}, 
-                    {{company.state}}  {{company.zip}}<br>{{company.phone}}</td>
+                    {% if company.Comp %}
+                        <td>{{ company.Comp }}<br>{{ company.Contact }}<br>
+                        {{company.Add1}} {{company.Add2}}<br>{{company.City}}, 
+                        {{company.state}}  {{company.zip}}<br>{{company.phone}}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
                 </tr>
                 <tr>
                     <td><b>Description:</b></td>
