@@ -28,6 +28,8 @@
                         <td>{{ company.Comp }}<br>{{ company.Contact }}<br>
                         {{company.Add1}} {{company.Add2}}<br>{{company.City}}, 
                         {{company.state}}  {{company.zip}}<br>{{company.phone}}</td>
+                    {% elif job.Company %}
+                        <td>{{ job.Company }} / {{ job.Contact }} </td>
                     {% else %}
                         <td> </td>
                     {% endif %}
