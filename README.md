@@ -23,7 +23,7 @@ must be created and configured to *"Run as administrator"*
 
 The same must be done with the **Visual Studio Code** shortcut
 
-![Run VS Code as administrator](./images/www/vs_run_as_admin.png)
+![Run VS Code as administrator](./images/www/code_run_as_admin.png)
 
 ## Create & Clone the inital Github repository
 Create a new/empty project on the Github Web site with a minimal configuration.
