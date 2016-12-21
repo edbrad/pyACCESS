@@ -16,12 +16,12 @@ using **Visual Studio Code** (VS Code) and **Git** for Windows.
 ### *Below is a journal of step-by-step notes from the development process:*
 
 ## Windows Environment Notes
-To avoid permission errors/issues when installing Python Tools and Packages from the command line, a Windows command line shortcut 
-must be created and configured to "Run as administrator"
+To avoid permission errors/issues when installing Python Tools and Packages from the command line, a **Windows command line** shortcut 
+must be created and configured to *"Run as administrator"*
 
 ![Run command line as administrator](./images/www/cl_run_as_admin.png)
 
-The same must be done with the **Visual Studio Code** shortcut.
+The same must be done with the **Visual Studio Code** shortcut
 
 ![Run VS Code as administrator](./images/www/vs_run_as_admin.png)
 
