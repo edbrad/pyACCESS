@@ -22,7 +22,7 @@
         </div>
         <br>
         <div>
-            <a href="/">BACK TO SEARCH</a> 
+            <a class="btn btn-primary" href="/"><i class="fa fa-arrow-circle-left fa-lg"></i> Back To Search</a> 
         </div>
         <br>
         <div>
@@ -43,13 +43,18 @@
                         <td>{{ row.JobDescp }}</td>
                         <td>{{ row.Remark }}</td>
                         <td>{{ row.DropDate }}</td>
-                        <td>{{ row.ToDropDate }}</td>
+                        {% if row.ToDropDate %}
+                            <td>{{ row.ToDropDate }}</td>
+                        {% else %}
+                            <td><em>N/A</em></td>
+                        {% endif %}
                         <td>{{ row.Permit }}</td>
                     </tr>
                 {% endfor %}
             </table>
             <div>
-                <a href="/">BACK TO SEARCH</a> 
+                <a class="btn btn-primary" href="/"><i class="fa fa-arrow-circle-left fa-lg"></i> Back To Search</a>
+                <br>&nbsp 
             </div>
         </div>
         <!-- Third Party Javascript Libraries -->

@@ -15,13 +15,14 @@
         <div align="center" class="jobsearch_form">
             <div><img src="../static/img/emslogoT.gif"></div>
             <h1><b>EMS Job Ticket Explorer<b></h1>
+            <p><em>Version 0.0.0 (Alpha)</em></p>
             <form class="form-inline" action="/jobnum-search/" method="get">
                 {% csrf_token %}
                 <div class="form-group">
                     <label class="col-md-12 col-form-label" for="jobnum">Enter a Full or Partial EMS Job Number: </label>
                     <div class="col-md-12">
                         <input class="form-control" id="jobsearch" type="text" name="jobnum" value="{{ jobnum }}" placeholder="9999-99">
-                        <input class="btn btn-primary" type="submit" value="SEARCH">
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-search fa-lg"></i>&nbspSearch</button>
                     </div> 
                 </div>
             </form>

@@ -6,10 +6,17 @@ body{
 
 /* center Job Search Form on page */
 .jobsearch_form{
-	width:350px;
+	color:darkslategrey;
+	width:385px;
 	height:400px;
 	position:absolute;
 	left:50%;
 	top:50%;
-	margin:-140px 0 0 -216px;
+	margin:-180px 0 0 -192px;
+}
+.btn {
+    margin: 7px;
+}
+.well {
+    padding: 7px;
 }

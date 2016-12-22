@@ -21,9 +21,7 @@ must be created and configured to *"Run as administrator"*
 
 ![Command line as administrator](./images/www/cl_run_as_admin.png)
 
-The same must be done with the **Visual Studio Code** shortcut
-
-![VS Code as administrator](./images/www/code_run_as_admin.png)
+The same must be done with the **Visual Studio Code** shortcut.
 
 ## Create & Clone the inital Github repository
 Create a new/empty project on the Github Web site with a minimal configuration.
@@ -244,20 +242,23 @@ this maps to the app's **/static** folder (manually added).
         <!-- Third Party CSS Libraries -->
         <link rel="stylesheet" href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.min.css' %}">
         <link rel="stylesheet" href="{% static 'bootstrap-3.3.7-dist/css/bootstrap-theme.min.css' %}">
+        <link rel="stylesheet" href="{% static 'font-awesome-4.7.0/css/font-awesome.min.css' %}">
         <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
         <!-- Custom CSS -->
         <link rel="stylesheet" href="{% static 'css/main.css' %}">
     </head>
     <body>
         <div align="center" class="jobsearch_form">
+            <div><img src="../static/img/emslogoT.gif"></div>
             <h1><b>EMS Job Ticket Explorer<b></h1>
+            <p><em>Version 0.0.0 (Alpha)</em></p>
             <form class="form-inline" action="/jobnum-search/" method="get">
                 {% csrf_token %}
                 <div class="form-group">
                     <label class="col-md-12 col-form-label" for="jobnum">Enter a Full or Partial EMS Job Number: </label>
                     <div class="col-md-12">
                         <input class="form-control" id="jobsearch" type="text" name="jobnum" value="{{ jobnum }}" placeholder="9999-99">
-                        <input class="btn btn-primary" type="submit" value="SEARCH">
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-search fa-lg"></i>&nbspSearch</button>
                     </div> 
                 </div>
             </form>
