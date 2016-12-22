@@ -20,7 +20,7 @@
                     <td><b>Job Number:</b></td>
                     <td>{{ jobnum }}</td>
                     <td><b>Pattern:</b></td>
-                    <td>{{ pattern|upper }}</td>
+                    <td style="color:darkgreen;"><b>{{ pattern|upper }}</b></td>
                 </tr>
                 {% for pat in patterns %}
                 <tr>
@@ -33,14 +33,14 @@
                     <td></td>
                     <td></td>
                     <td><b>Total Pieces:</b></td>
-                    <td><b>{{ patterntotal|intcomma }}</b></td>
+                    <td style="color:darkred;"><b>{{ patterntotal|intcomma }}</b></td>
                 </tr>
                 {% endfor %}
             </table>
         </div>
         <!-- Description Lines -->
         <div class="row col-sm-12">
-            <p><b>Description:</b><p>
+            <h3>Description</h3>
             <table class="table table-condensed">
                 {% for pat in patterns %}
                 <tr>
@@ -70,50 +70,50 @@
             </table>
         </div>
         <!-- Presort Counts -->
-        <div class="row col-sm-6">
+        <div class="row col-sm-8">
             <h3>Postal Counts</h3>
             <table class="table table-bordered table-striped table-condensed">
                 {% for pat in patterns %}
                 <tr>
-                    <th>AUTOMATION</th>
-                    <th>Qty.</th>
-                    <th>NON-AUTOMATION</th>
-                    <th>Qty.</th>
+                    <th class="col-xs-4" style="text-align: center">AUTOMATION</th>
+                    <th class="col-xs-2" style="text-align: left">Qty.</th>
+                    <th class="col-xs-4" style="text-align: center">NON-AUTOMATION</th>
+                    <th class="col-xs-2" style="text-align: left">Qty.</th>
                 </tr>
                 <tr>
-                    <td>5-Digit Auto:</td>
+                    <td style="text-align: right">5-Digit Auto:</td>
                     <td><b>{{ pat.cdig5bar |floatformat|intcomma }}</b></td>
-                    <td>Machinable 5-Digit:</td>
+                    <td style="text-align: right">Machinable 5-Digit:</td>
                     <td><b>{{ pat.cbasbar|floatformat|intcomma }}</b></td>
                 </tr>
                 <tr>
-                    <td>3-Digit Auto:</td>
+                    <td style="text-align: right">3-Digit Auto:</td>
                     <td><b>{{pat.cdig3bar|floatformat|intcomma }}</b></td>
-                    <td>Machinable 3-digit:</td>
+                    <td style="text-align: right">Machinable 3-digit:</td>
                     <td><b>{{ pat.cbas3dig|floatformat|intcomma }}</b></td>
                 </tr>
                 <tr>
-                    <td>Automated ADC/AADC:</td>
+                    <td style="text-align: right">Automated ADC/AADC:</td>
                     <td><b>{{ pat.caadc|floatformat|intcomma }}</b></td>
-                    <td>Machinable ADC/AADC:</td>
+                    <td style="text-align: right">Machinable ADC/AADC:</td>
                     <td><b>{{ pat.cpre|floatformat|intcomma }}</b></td>
                 </tr>
                 <tr>
-                    <td>Automated MADC/MAADC:</td>
+                    <td style="text-align: right">Automated MADC/MAADC:</td>
                     <td><b>{{ pat.cmaadc|floatformat|intcomma }}</b></td>
-                    <td>Machinable MADC/MAADC:</td>
+                    <td style="text-align: right">Machinable MADC/MAADC:</td>
                     <td><b>{{ pat.cbas|floatformat|intcomma }}</b></td>
                 </tr>
                 <tr>
-                    <td>High Density Enhanced CAR-RT:</td>
+                    <td style="text-align: right">High Density Enhanced CAR-RT:</td>
                     <td><b>{{ pat.cwalk125|floatformat|intcomma }}</b></td>
-                     <td>Basic CAR-RT:</td>
+                    <td style="text-align: right">Basic CAR-RT:</td>
                     <td><b>{{ pat.ccrt|floatformat|intcomma }}</b></td>
                 </tr>
                 <tr>
-                    <td>Saturation Enhanced CAR-RT:</td>
+                    <td style="text-align: right">Saturation Enhanced CAR-RT:</td>
                     <td><b>{{ pat.csat|floatformat|intcomma }}</b></td>
-                    <td>Pack and Ship/Estimate:</td>
+                    <td style="text-align: right">Pack and Ship/Estimate:</td>
                     <td><b>{{ pat.PackShip|floatformat|intcomma }}</b></td>
                 </tr>
                 {% endfor %}
@@ -123,8 +123,8 @@
             <table class="table table-bordered table-striped table-condensed">
                 {% for pat in patterns %}
                 <tr>
-                    <th>NON-U.S.A. Mail</th>
-                    <th>Qty.</th>
+                    <th class="col-xs-2">NON-U.S.A. Mail</th>
+                    <th class="col-xs-10">Qty.</th>
                 </tr>
                 <tr>
                     <td>Foreign</td>
@@ -138,21 +138,21 @@
             </table>
             {% endif %}
         </div>
-        <div class="row col-sm-9">
+        <div class="row col-sm-12">
             <h3>Mail Piece Components</h3>
             {% for pat in patterns %}
              <!-- PostCard or Self Mailer -->
             {% if pat.PostName1 != None or pat.PostCode1 != None or pat.PostNote1 != None %}
             <table class="table table-bordered table-condensed">
                 <tr>
-                    <th>POSTCARD / SELF MAILER</th>
+                    <th style="color:steelblue;">POSTCARD / SELF MAILER</th>
                     <th></th>
                     <th></th>
                 </tr>
                 <tr>
-                    <th>Name</th>
-                    <th>Code</th>
-                    <th>Note</th>
+                    <th class="col-xs-2">Name</th>
+                    <th class="col-xs-2">Code</th>
+                    <th class="col-xs-8">Note</th>
                 </tr>
                 <tr>
                     <td>{{ pat.PostName1 }}</td>
@@ -164,14 +164,14 @@
             {% if pat.OuterName != None or pat.OuterCode != None or pat.OuterNote != None %}
             <table class="table table-bordered table-condensed">
                 <tr>
-                    <th>OUTER ENVELOPE</th>
+                    <th style="color:steelblue;">OUTER ENVELOPE</th>
                     <th></th>
                     <th></th>
                 </tr>
                 <tr>
-                    <th>Name</th>
-                    <th>Code</th>
-                    <th>Note</th>
+                    <th class="col-xs-2">Name</th>
+                    <th class="col-xs-2">Code</th>
+                    <th class="col-xs-8">Note</th>
                 </tr>
                 <tr>
                     {% if pat.OuterName != None %}
@@ -195,14 +195,14 @@
             {% if pat.Insert1Name != None or pat.Insert1Code != None or pat.Insert1Note != None %}
             <table class="table table-bordered table-condensed">
                 <tr>
-                    <th>INSERTS</th>
+                    <th style="color:steelblue;">INSERTS</th>
                     <th></th>
                     <th></th>
                 </tr>
                 <tr>
-                    <th>Name</th>
-                    <th>Code</th>
-                    <th>Note</th>
+                    <th class="col-xs-2">Name</th>
+                    <th class="col-xs-2">Code</th>
+                    <th class="col-xs-8">Note</th>
                 </tr>
                 <tr>
                      {% if pat.Insert1Name != None %}

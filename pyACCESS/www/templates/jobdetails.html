@@ -19,8 +19,8 @@
         <div>
             <table class="table table-bordered table-striped table-condensed">
                 <tr>
-                    <th>Job Number:</th>
-                    <th>{{ jobnum }}</th>
+                    <th class="col-xs-3">Job Number:</th>
+                    <th class="col-xs-9">{{ jobnum }}</th>
                 </tr>
                 <tr>
                     <td><b>Company/Contact:</b></td>
@@ -161,15 +161,15 @@
         </div>
         <!-- Pattern List -->
         <h3>Pattern List</h3>
-        <p style="color:steelblue"><b><em>Click Pattern Letter To See Details</em></b></p>
+        <p style="color:steelblue; font-size: small;"><b><em>click pattern letter to see details</em></b></p>
         <div>
             <table class="table table-bordered table-striped table-condensed">
                 <tr>
-                    <th>Pattern</th>
-                    <th>Label</th>
-                    <th>Description</th>
-                    <th>Mail Class / Payment</th>
-                    <th>Quantity</th>
+                    <th class="col-xs-1">Pattern</th>
+                    <th class="col-xs-4">Label</th>
+                    <th class="col-xs-4">Description</th>
+                    <th class="col-xs-2">Mail Class / Payment</th>
+                    <th class="col-xs-1">Quantity</th>
                 </tr>
             {% for pat in patterns %}
                 <tr>
@@ -186,8 +186,8 @@
         <h3>Departmental Instructions</h3>
         <table class="table table-bordered table-striped table-condensed">
             <tr>
-                <td><b>Excess Stock:</b></td>
-                <td>{{ job.stockInst }}</td>
+                <td class="col-xs-3"><b>Excess Stock:</b></td>
+                <td class="col-xs-9">{{ job.stockInst }}</td>
             </tr>
             <tr>
                 <td><b>Computer Room:</b></td>

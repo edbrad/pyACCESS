@@ -15,12 +15,17 @@
     <body>
         <h1><b>EMS Job Ticket List</b></h1>
         <div>
-            Results From Search: &nbsp <b>"{{ jobnum }}"</b>
+            <table class="table table-condensed">
+                <tr>
+                    <td style="text-align: right" class="col-xs-2">Results From Search:</td>
+                    <td class="col-xs-10" style="color:darkgreen"><b>"{{ jobnum }}"</b></td>
+                </tr>
+                <tr>
+                    <td style="text-align: right" >Number of Jobs Found:</td>
+                    <td style="color:darkred;"><b>{{ rows|length|intcomma }}</b></td>
+                </tr>
+            </table>
         </div>
-        <div>
-            Number of Jobs Found: &nbsp <b>{{ rows|length|intcomma }}</b>
-        </div>
-        <br>
         <div>
             <a class="btn btn-primary" href="/"><i class="fa fa-arrow-circle-left fa-lg"></i> Back To Search</a> 
         </div>

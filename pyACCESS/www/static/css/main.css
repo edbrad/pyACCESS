@@ -14,9 +14,8 @@ body{
 	top:50%;
 	margin:-180px 0 0 -192px;
 }
-.btn {
-    margin: 7px;
-}
-.well {
-    padding: 7px;
+
+/* add space on top of button when wrapping occurs */
+.jobsearch_input {
+    margin-top: 7px;
 }
