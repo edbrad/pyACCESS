@@ -343,3 +343,102 @@ Django version 1.10.4, using settings 'pyACCESS.settings'
 Starting development server at http://0.0.0.0:8000/
 Quit the server with CTRL-BREAK.
 ~~~~
+
+# API
+
+## Build the REST API portion of the application to allow other applications to interact with the Job Ticket data
+### Install the Django REST Framework (via pip)
+~~~~
+(venv) C:\py\pyACCESS\pyACCESS>pip install djangorestframework
+Collecting djangorestframework
+  Downloading djangorestframework-3.5.3-py2.py3-none-any.whl (709kB)
+    100% |################################| 716kB 933kB/s
+Installing collected packages: djangorestframework
+Successfully installed djangorestframework-3.5.3
+~~~~
+### Add a new app (api) to the Master pyACCESS project
+~~~~
+(venv) C:\py\pyACCESS\pyACCESS>python manage.py startapp api
+~~~~ 
+### Add the REST Framework and the new api app to the pyACCESS list of installed apps
+```Python
+# Application definition
+
+INSTALLED_APPS = [
+    'www',
+    'api',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django.contrib.humanize',
+    'rest_framework',
+]
+```
+### Add mapping for "/api/" to the main pyACCESS project's **urls.py** file. The API-specific urls will be defined within the new *api* app folder (./api/urls.py)
+```Python
+urlpatterns = [
+    url(r'^admin/', admin.site.urls),
+    url(r'^', include('www.urls')),
+    url(r'^api/', include('api.urls')),
+]
+```
+### Create the url mapping file for the api app
+```Python
+from django.conf.urls import url
+from . import views
+
+urlpatterns = [
+    url(r'^$', views.root),
+    url(r'^jobnum-search/([\w\-]+)$', views.joblist, name='jobnum_search'),
+]
+```
+
+### Add the Response Methods to the views.py file
+Each method acts upon an incomming HTTP request verb. The **@api_view** decorator indicates to the *Django REST Framework* that 
+the method is being used for an API endpoint and which HTTP verb(s) the Method is handling within the code body (e.g. GET, POST, PUT, DELETE, etc...).  The example below is a
+super-basic Method that returns a plain text string:
+```Python
+# API Welcome Response
+@api_view(['GET'])
+def root(request):
+    """
+    Generic/Default Text Response.
+    """
+    data = 'Welcome to the pyACCESS REST API'
+    return Response(data)
+```
+When sending "real" data back to the client, the data must be "serialized" into a format that can be accurately transmitted and received.  In this case
+**JSON** is the format (XML is also supported).  The objects (rows) returned by the **pyodbc** cursor must be converted to a list of Python Dictionaries (dict).  
+Fortunately, the resulting Python Dictionary structure is already in JSON format, so it can be passed directly into the Response:
+```Python
+    """
+    Serialize the query results into JSON (as a Python dictionary)
+    """
+    joblist = list()
+    for row in rows:
+        d = collections.OrderedDict()
+        d['Jobnum'] = row.Jobnum
+        d['Company'] = row.Company
+        d['JobDescp'] = row.JobDescp
+        d['Remark'] = row.Remark
+        d['DropDate'] = row.DropDate
+        d['ToDropDate'] = row.ToDropDate
+        d['Permit'] = row.Permit
+        joblist.append(d)
+
+    """
+    Return the response data
+    """
+    return Response(joblist)
+```
+Typing an API Endpoint URL into a Web Browser, yeilds the resulting JSON data ("Pretty" formatted).  The Django REST Framework wraps 
+the response in a formatted GUI page
+
+![api](./images/api/api_get_example.png)
+
+When a direct/non-brower-based call to the API is made, response is in standard JSON text format:
+
+![api](./images/api/api_get_CP_example.png)

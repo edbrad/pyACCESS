@@ -12,7 +12,8 @@ def joblist(request):
     if jobnum == "":
         rows = None
     else:
-        cnxn = pyodbc.connect(r"Driver={Microsoft Access Driver (*.mdb)};Dbq=C:\\data\\mdb\\Jtk2002_Data.mdb;")
+        dbpath = r"W:\dbsys\JobTicket\Jtk2002_Data.mdb;"
+        cnxn = pyodbc.connect(r"Driver={Microsoft Access Driver (*.mdb)};Dbq=\\FS-0\\sys\\dbsys\\JobTicket\\Jtk2002_Data.mdb;")
         crsr = cnxn.cursor()
         crsr.execute("SELECT * FROM Comp_Job where Jobnum like ?", (str(jobnum) + "%"))
         rows = crsr.fetchall()
@@ -27,7 +28,7 @@ def jobdetails(request, jobnum):
         rows = None
     else:
         # get info for the selected Job #
-        cnxn = pyodbc.connect(r"Driver={Microsoft Access Driver (*.mdb)};Dbq=C:\\data\\mdb\\Jtk2002_Data.mdb;")
+        cnxn = pyodbc.connect(r"Driver={Microsoft Access Driver (*.mdb)};Dbq=\\FS-0\\sys\\dbsys\\JobTicket\\Jtk2002_Data.mdb;")
         crsr = cnxn.cursor()
         crsr.execute("SELECT * FROM Comp_Job where Jobnum = ?", (str(jobnum)))
         job = crsr.fetchone()
@@ -79,7 +80,7 @@ def patterndetails(request, jobnum, pattern):
         patterns = None
     else:
         # get pattern info for the selected Job #
-        cnxn = pyodbc.connect(r"Driver={Microsoft Access Driver (*.mdb)};Dbq=C:\\data\\mdb\\Jtk2002_Data.mdb;")
+        cnxn = pyodbc.connect(r"Driver={Microsoft Access Driver (*.mdb)};Dbq=\\FS-0\\sys\\dbsys\\JobTicket\\Jtk2002_Data.mdb;")
         crsr_2 = cnxn.cursor()
         crsr_2.execute("SELECT * FROM [Job Details] where jobnum = ? AND jobpat = ?", (str(jobnum), str(pattern)))
         patterns = crsr_2.fetchall()
