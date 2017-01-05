@@ -442,4 +442,4 @@ the response in a formatted GUI page
 
 When a direct/non-brower-based call to the API is made, response is in standard JSON text format:
 
-![api direct get](/images/api/api_get_CP_example.png?raw=true)
+![api direct get](https://github.com/edbrad/pyACCESS/blob/master/images/api/api_get_CP_example.PNG)
