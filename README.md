@@ -312,6 +312,7 @@ The rendered *joblist* HTML
 
 ![joblist.html](./images/www/joblist.html.png)
 
+
 The rendered *jobdetails* HTML
 
 ![jobdetails.html](./images/www/jobdetails.html.png)
@@ -437,8 +438,8 @@ Fortunately, the resulting Python Dictionary structure is already in JSON format
 Typing an API Endpoint URL into a Web Browser, yeilds the resulting JSON data ("Pretty" formatted).  The Django REST Framework wraps 
 the response in a formatted GUI page
 
-![api web get](./images/api/api_get_example.png)
+![api browser get](./images/api/api_get_example.png)
 
 When a direct/non-brower-based call to the API is made, response is in standard JSON text format:
 
-![api cp get](./images/api/api_get_CP_example.png)
+![api direct get](./images/api/api_get_CP_example.png)
