@@ -424,7 +424,7 @@ def jobnum_search(request):
 ```
 When sending "real" data back to the client, the data must be "serialized" into a format that can be accurately transmitted and received.  In this case
 **JSON** is the format (XML is also supported).  The objects (rows) returned by the **pyodbc** cursor must be converted to a list of Python Dictionaries (dict). 
- 
+
 Fortunately, the resulting Python Dictionary structure is already in JSON format, so it can be passed directly into the Response:
 ```Python
     """
@@ -452,6 +452,7 @@ the response in a formatted GUI page
 
 ![api browser get - ](./images/api/api_get_example.PNG)
 
-When a direct/non-brower-based call to the API is made, response is in standard JSON text format:
+When a direct/non-brower-based call to the API is made, response is in standard JSON text format.  
+Below is an example using **PostMan**, a free REST Client utility for exploring and testing REST APIs
 
 ![api direct get - ](./images/api/api_get_CP_example.PNG)
