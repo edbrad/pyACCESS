@@ -3,5 +3,5 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.root),
-    url(r'^jobnum-search/([\w\-]+)$', views.joblist, name='jobnum_search'),
+    url(r'^jobnum-search/$', views.jobnum_search, name='jobnum_search'),
 ]

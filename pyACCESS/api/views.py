@@ -15,9 +15,13 @@ def root(request):
     data = 'Welcome to the pyACCESS REST API'
     return Response(data)
 
-# get list of jobs
+# Search for Job(s) by Job Number (full or partial)
 @api_view(['GET'])
-def joblist(request, jobnum):
+def jobnum_search(request):
+    """
+    Get the job number parameter from the url
+    """
+    jobnum = request.GET['jobnum']
     """
     Query the ACCESS Database and return the list of matching Jobs (jobnum)
     """

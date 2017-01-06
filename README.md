@@ -387,13 +387,15 @@ urlpatterns = [
 ]
 ```
 ### Create the url mapping file for the api app
+along with the the job-search url the request should contain the job number (?jobnum=9999-99) to 
+search for (full or partial)
 ```Python
 from django.conf.urls import url
 from . import views
 
 urlpatterns = [
     url(r'^$', views.root),
-    url(r'^jobnum-search/([\w\-]+)$', views.joblist, name='jobnum_search'),
+    url(r'^jobnum-search/$', views.jobnum_search, name='jobnum_search'),
 ]
 ```
 
@@ -410,6 +412,15 @@ def root(request):
     """
     data = 'Welcome to the pyACCESS REST API'
     return Response(data)
+```
+When the client passes in the job number parameter in the url (?jobnum=9999-99), it is extracted from the request GET data
+```Python
+@api_view(['GET'])
+def jobnum_search(request):
+    """
+    Get the job number parameter from the url
+    """
+    jobnum = request.GET['jobnum']
 ```
 When sending "real" data back to the client, the data must be "serialized" into a format that can be accurately transmitted and received.  In this case
 **JSON** is the format (XML is also supported).  The objects (rows) returned by the **pyodbc** cursor must be converted to a list of Python Dictionaries (dict).  
@@ -440,6 +451,10 @@ the response in a formatted GUI page
 
 ![api browser get](https://github.com/edbrad/pyACCESS/blob/master/images/api/api_get_example.PNG)
 
+![api browser get - ](./images/api/api_get_example.PNG)
+
 When a direct/non-brower-based call to the API is made, response is in standard JSON text format:
 
 ![api direct get](https://github.com/edbrad/pyACCESS/blob/master/images/api/api_get_CP_example.PNG)
+
+![api direct get - ](./images/api/api_get_CP_example.PNG)
