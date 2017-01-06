@@ -423,7 +423,8 @@ def jobnum_search(request):
     jobnum = request.GET['jobnum']
 ```
 When sending "real" data back to the client, the data must be "serialized" into a format that can be accurately transmitted and received.  In this case
-**JSON** is the format (XML is also supported).  The objects (rows) returned by the **pyodbc** cursor must be converted to a list of Python Dictionaries (dict).  
+**JSON** is the format (XML is also supported).  The objects (rows) returned by the **pyodbc** cursor must be converted to a list of Python Dictionaries (dict). 
+ 
 Fortunately, the resulting Python Dictionary structure is already in JSON format, so it can be passed directly into the Response:
 ```Python
     """
