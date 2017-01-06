@@ -351,7 +351,7 @@ Quit the server with CTRL-BREAK.
 
 # API
 
-## Build the REST API portion of the application to allow other applications to interact with the Job Ticket data
+## Build the REST API portion of the application to allow other applications to connect and interact with the Job Ticket data
 ### Install the Django REST Framework (via pip)
 ~~~~
 (venv) C:\py\pyACCESS\pyACCESS>pip install djangorestframework
