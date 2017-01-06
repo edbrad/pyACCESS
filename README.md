@@ -25,6 +25,8 @@ The same must be done with the **Visual Studio Code** shortcut.
 
 ![VSCODE as administrator](./images/www/code_run_as_admin.png)
 
+![VSCODE as administrator - ](https://github.com/edbrad/pyACCESS/blob/master/images/www/code_run_as_admin.PNG)
+
 ## Create & Clone the inital Github repository
 Create a new/empty project on the Github Web site with a minimal configuration.
 
