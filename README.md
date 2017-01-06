@@ -449,12 +449,8 @@ Fortunately, the resulting Python Dictionary structure is already in JSON format
 Typing an API Endpoint URL into a Web Browser, yeilds the resulting JSON data ("Pretty" formatted).  The Django REST Framework wraps 
 the response in a formatted GUI page
 
-![api browser get](https://github.com/edbrad/pyACCESS/blob/master/images/api/api_get_example.PNG)
-
 ![api browser get - ](./images/api/api_get_example.PNG)
 
 When a direct/non-brower-based call to the API is made, response is in standard JSON text format:
-
-![api direct get](https://github.com/edbrad/pyACCESS/blob/master/images/api/api_get_CP_example.PNG)
 
 ![api direct get - ](./images/api/api_get_CP_example.PNG)
