@@ -19,20 +19,19 @@ def root(request):
 @api_view(['GET'])
 def jobnum_search(request):
     """
-    Get the job number parameter from the url
+    Search the ACCESS Database and return the list of matching Jobs with general Job information
     """
-    jobnum = request.GET['jobnum']
-    """
-    Query the ACCESS Database and return the list of matching Jobs (jobnum)
-    """
+    jobnum = request.GET['jobnum'] # get the job number parameter from the http request
+    
     if jobnum == "":
         rows = None
     else:
-        cnxn = pyodbc.connect(r"Driver={Microsoft Access Driver (*.mdb)};Dbq=C:\\data\\mdb\\Jtk2002_Data.mdb;")
+        #cnxn = pyodbc.connect(r"Driver={Microsoft Access Driver (*.mdb)};Dbq=C:\\data\\mdb\\Jtk2002_Data.mdb;")
+        cnxn = pyodbc.connect(r"Driver={Microsoft Access Driver (*.mdb)};Dbq=\\FS-0\\sys\\dbsys\\JobTicket\\Jtk2002_Data.mdb;")
         crsr = cnxn.cursor()
         crsr.execute("SELECT * FROM Comp_Job where Jobnum like ?", (str(jobnum) + "%"))
         rows = crsr.fetchall()
-
+        # close the connection/lock
         cnxn.close()
     
     """
@@ -40,6 +39,7 @@ def jobnum_search(request):
     """
     joblist = list()
     for row in rows:
+        # build list entry
         d = collections.OrderedDict()
         d['Jobnum'] = row.Jobnum
         d['Company'] = row.Company
@@ -85,7 +85,7 @@ def jobnum_search(request):
         d['Spoilage'] = row.Spoilage
         d['StampInst'] = row.StampInst
         d['ysnReports'] = row.ysnReports
-        
+        # add entry to the list
         joblist.append(d)
 
     """
@@ -97,21 +97,20 @@ def jobnum_search(request):
 @api_view(['GET'])
 def jobdetails(request):
     """
-    Get the job number parameter from the url
-    """
-    jobnum = request.GET['jobnum']
-    """
     Query the ACCESS Database and return the list of matching Job Details (Patterns)
     """
+    jobnum = request.GET['jobnum'] # get the job number parameter from the http request
+    
     if jobnum == "":
         rows = None
     else:
-        # get pattern info for the selected Job
-        cnxn = pyodbc.connect(r"Driver={Microsoft Access Driver (*.mdb)};Dbq=C:\\data\\mdb\\Jtk2002_Data.mdb;") 
+        # get pattern details for the selected Job
+        #cnxn = pyodbc.connect(r"Driver={Microsoft Access Driver (*.mdb)};Dbq=C:\\data\\mdb\\Jtk2002_Data.mdb;")
+        cnxn = pyodbc.connect(r"Driver={Microsoft Access Driver (*.mdb)};Dbq=\\FS-0\\sys\\dbsys\\JobTicket\\Jtk2002_Data.mdb;") 
         crsr = cnxn.cursor()
         crsr.execute("SELECT * FROM [Job Details] where jobnum = ?", (str(jobnum)))
         rows = crsr.fetchall()
-
+        # close the connection/lock
         cnxn.close()
 
         """
@@ -119,6 +118,7 @@ def jobdetails(request):
         """
         patlist = list()
         for row in rows:
+            # build list entry
             d = collections.OrderedDict()
             d['Jobnum'] = row.jobnum
             d['Jobpat'] = row.jobpat
@@ -228,10 +228,49 @@ def jobdetails(request):
             d['lngNSAID'] = row.lngNSAID
             d['lngEPOPtype'] = row.lngEPOPtype
             d['ysnBagTagsDone'] = row.ysnBagTagsDone
-            d['dtmBagTagsDone'] = row.dtmBagTagsDone   
+            d['dtmBagTagsDone'] = row.dtmBagTagsDone 
+            # add entry to the list
             patlist.append(d)
 
         """
         Return the response data (JSON)
         """
         return Response(patlist)
+
+# Get Companies
+@api_view(['GET'])
+def companies(request):
+    """
+    Query the ACCESS Database and return the list of Companies with Company details
+    """
+    # get all the Companies
+    #cnxn = pyodbc.connect(r"Driver={Microsoft Access Driver (*.mdb)};Dbq=C:\\data\\mdb\\Jtk2002_Data.mdb;")
+    cnxn = pyodbc.connect(r"Driver={Microsoft Access Driver (*.mdb)};Dbq=\\FS-0\\sys\\dbsys\\JobTicket\\Jtk2002_Data.mdb;")
+    crsr = cnxn.cursor()
+    crsr.execute("SELECT * FROM [COMPANY]")
+    rows = crsr.fetchall()
+    # close the connection/lock
+    cnxn.close()
+
+    """
+    Serialize the query results into JSON (via a Python dictionary collection)
+    """
+    companylist = list()
+    for row in rows:
+        # build list entry
+        d = collections.OrderedDict()
+        d['Comp'] = row.Comp
+        d['Contact'] = row.Contact
+        d['Add1'] = row.Add1
+        d['Add2'] = row.Add2
+        d['City'] = row.City
+        d['state'] = row.state
+        d['zip'] = row.zip
+        d['phone'] = row.phone
+        # add entry to the list
+        companylist.append(d)
+
+    """
+    Return the response data (JSON)
+    """
+    return Response(companylist)
