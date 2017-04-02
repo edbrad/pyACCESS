@@ -6,6 +6,12 @@ import datetime
 import collections
 import pyodbc # Python ODBC Library (ACCESS 97 connectivity)
 
+"""
+SET DATABASE PATH
+"""
+dbpath = r"Driver={Microsoft Access Driver (*.mdb)};Dbq=C:\\data\\mdb\\Jtk2002_Data.mdb;"
+#db = r"Driver={Microsoft Access Driver (*.mdb)};Dbq=\\FS-0\\sys\\dbsys\\JobTicket\\Jtk2002_Data.mdb;"
+
 # API Welcome Response
 @api_view(['GET'])
 def root(request):
@@ -26,8 +32,7 @@ def jobnum_search(request):
     if jobnum == "":
         rows = None
     else:
-        #cnxn = pyodbc.connect(r"Driver={Microsoft Access Driver (*.mdb)};Dbq=C:\\data\\mdb\\Jtk2002_Data.mdb;")
-        cnxn = pyodbc.connect(r"Driver={Microsoft Access Driver (*.mdb)};Dbq=\\FS-0\\sys\\dbsys\\JobTicket\\Jtk2002_Data.mdb;")
+        cnxn = pyodbc.connect(dbpath)
         crsr = cnxn.cursor()
         crsr.execute("SELECT * FROM Comp_Job where Jobnum like ?", (str(jobnum) + "%"))
         rows = crsr.fetchall()
@@ -43,6 +48,7 @@ def jobnum_search(request):
         d = collections.OrderedDict()
         d['Jobnum'] = row.Jobnum
         d['Company'] = row.Company
+        d['Contact'] = row.Contact
         d['DateReceived'] = row.DateReceived 
         d['DropDate'] = row.DropDate
         d['ToDropDate'] = row.ToDropDate
@@ -105,8 +111,7 @@ def jobdetails(request):
         rows = None
     else:
         # get pattern details for the selected Job
-        #cnxn = pyodbc.connect(r"Driver={Microsoft Access Driver (*.mdb)};Dbq=C:\\data\\mdb\\Jtk2002_Data.mdb;")
-        cnxn = pyodbc.connect(r"Driver={Microsoft Access Driver (*.mdb)};Dbq=\\FS-0\\sys\\dbsys\\JobTicket\\Jtk2002_Data.mdb;") 
+        cnxn = pyodbc.connect(dbpath)
         crsr = cnxn.cursor()
         crsr.execute("SELECT * FROM [Job Details] where jobnum = ?", (str(jobnum)))
         rows = crsr.fetchall()
@@ -244,8 +249,7 @@ def companies(request):
     Query the ACCESS Database and return the list of Companies with Company details
     """
     # get all the Companies
-    #cnxn = pyodbc.connect(r"Driver={Microsoft Access Driver (*.mdb)};Dbq=C:\\data\\mdb\\Jtk2002_Data.mdb;")
-    cnxn = pyodbc.connect(r"Driver={Microsoft Access Driver (*.mdb)};Dbq=\\FS-0\\sys\\dbsys\\JobTicket\\Jtk2002_Data.mdb;")
+    cnxn = pyodbc.connect(dbpath)
     crsr = cnxn.cursor()
     crsr.execute("SELECT * FROM [COMPANY]")
     rows = crsr.fetchall()
@@ -274,3 +278,205 @@ def companies(request):
     Return the response data (JSON)
     """
     return Response(companylist)
+
+# Get for Job(s) by Company
+@api_view(['GET'])
+def jobs_company(request):
+    """
+    Search the ACCESS Database and return the list of matching Jobs for a given company (client)
+    """
+    company = request.GET['company'] # get the company parameter from the http request
+    
+    if company == "":
+        rows = None
+    else:
+        cnxn = pyodbc.connect(dbpath)
+        crsr = cnxn.cursor()
+        crsr.execute("SELECT * FROM Comp_Job where Company = ?", (str(company)))
+        rows = crsr.fetchall()
+        # close the connection/lock
+        cnxn.close()
+    
+    """
+    Serialize the query results into JSON (via a Python dictionary collection)
+    """
+    joblist = list()
+    for row in rows:
+        # build list entry
+        d = collections.OrderedDict()
+        d['Jobnum'] = row.Jobnum
+        d['Company'] = row.Company
+        d['DateReceived'] = row.DateReceived 
+        d['DropDate'] = row.DropDate
+        d['ToDropDate'] = row.ToDropDate
+        d['JobTicketDate'] = row.__getattribute__('Job Ticket Date')
+        d['JobDescp'] = row.JobDescp
+        d['RDept'] = row.RDept
+        d['Sample1'] = row.Sample1
+        d['Sample2'] = row.Sample2
+        d['Sample3'] = row.Sample3
+        d['Sample4'] = row.Sample4
+        d['Sample5'] = row.Sample5
+        d['Sample6'] = row.Sample6
+        d['Sample7'] = row.Sample7
+        d['Sample8'] = row.Sample8
+        d['Sample9'] = row.Sample9
+        d['Sample10'] = row.Sample10
+        d['Sample11'] = row.Sample11
+        d['Sample12'] = row.Sample12
+        d['Sample13'] = row.Sample13
+        d['Sample14'] = row.Sample14
+        d['Sample15'] = row.Sample15
+        d['Sample16'] = row.Sample16
+        d['Sample17'] = row.Sample17
+        d['Sample18'] = row.Sample18
+        d['Sample19'] = row.Sample19
+        d['Sample20'] = row.Sample20
+        d['Sample21'] = row.Sample21
+        d['Sample22'] = row.Sample22
+        d['PostageBy'] = row.PostageBy
+        d['stockInst'] = row.stockInst
+        d['CRInst'] = row.CRInst
+        d['MeterInst'] = row.MeterInst
+        d['BDInst'] = row.BDInst
+        d['AdDept'] = row.AdDept
+        d['InDInst'] = row.InDInst
+        d['PO3602Inst'] = row.__getattribute__('3602Inst')
+        d['Remark'] = row.Remark
+        d['PO'] = row.PO
+        d['Permit'] = row.Permit
+        d['Spoilage'] = row.Spoilage
+        d['StampInst'] = row.StampInst
+        d['ysnReports'] = row.ysnReports
+        # add entry to the list
+        joblist.append(d)
+
+    """
+    Return the response data (JSON)
+    """
+    return Response(joblist)
+
+# Get Stats info
+@api_view(['GET'])
+def stats(request):
+    """
+    Query the ACCESS Database, build and return a Job Statistics object (JSON)
+    """
+    r_date = ""
+    r_date = request.GET['date'] # get the optional reference date
+    
+    if not r_date:
+        ending_date = datetime.date.today
+    else:
+        ending_date = datetime.datetime.strptime(r_date, "%m/%d/%Y")
+    
+    #print("Date: " + str(ending_date))
+
+    cnxn = pyodbc.connect(dbpath)
+    crsr = cnxn.cursor()
+    crsr.execute("SELECT Jobnum, JobDescp, DropDate, ToDropDate FROM Comp_Job")
+    rows = crsr.fetchall()
+    # close the connection/lock
+    cnxn.close()
+
+    # container object for all the stat response information
+    stats_all = {}
+
+    # collections of embeded stat data
+    stats_todays_jobs = []
+
+    """
+    build today's jobs data collection
+    """
+    stats_todays_jobs = []
+    wrk_jobs_list = list()
+    bad_from_date = False
+    bad_to_date = False
+
+    # build reduced recordset of the ACCESS Job table data 
+    for row in rows:
+        # build list entry
+        d = collections.OrderedDict()
+        d['Jobnum'] = row.Jobnum
+        d['DropDate'] = row.DropDate
+        d['ToDropDate'] = row.ToDropDate
+        d['JobDescp'] = row.JobDescp
+        d['PieceCount'] = 0
+        # add entry to the list
+        wrk_jobs_list.append(d)
+    
+    # convert recordset dates to common format for ordering (YYYY-MM-DD)
+    for job in wrk_jobs_list:
+        bad_from_date = False
+        bad_to_date = False
+
+        # reformat From Drop Date
+        if not job['DropDate']:
+            job['DropDate'] = datetime.datetime.strptime("1/1/1970", "%m/%d/%Y")
+        else:
+            wrk_date_parts = job['DropDate'].split("/")
+
+            for part in wrk_date_parts:
+                if not part.isnumeric():
+                    bad_from_date = True
+
+            if (len(wrk_date_parts) == 3 and (bad_from_date == False)):
+                if len(wrk_date_parts[2]) == 2:
+                    job['DropDate'] = datetime.datetime.strptime(job['DropDate'], "%m/%d/%y")
+                elif len(wrk_date_parts[2]) == 4:
+                    job['DropDate'] = datetime.datetime.strptime(job['DropDate'], "%m/%d/%Y")
+                else:
+                    job['DropDate'] = datetime.datetime.strptime("1/1/1970", "%m/%d/%Y")
+            else:
+                job['DropDate'] = datetime.datetime.strptime("1/1/1970", "%m/%d/%Y")
+        
+        # reformat To Drop Date
+        if not job['ToDropDate']:
+            job['ToDropDate'] = datetime.datetime.strptime("1/1/1970", "%m/%d/%Y")
+        else:
+            wrk_date_parts = job['ToDropDate'].split("/")
+
+            for part in wrk_date_parts:
+                #print("Date Part: " + part)
+                if not part.isnumeric():
+                    bad_to_date = True
+                    #print("bad date!")
+
+            if (len(wrk_date_parts) == 3 and (bad_to_date == False)):
+                if len(wrk_date_parts[2]) == 2:
+                    job['ToDropDate'] = datetime.datetime.strptime(job['ToDropDate'], "%m/%d/%y")
+                elif len(wrk_date_parts[2]) == 4:
+                    job['ToDropDate'] = datetime.datetime.strptime(job['ToDropDate'], "%m/%d/%Y")
+                else:
+                    job['ToDropDate'] = datetime.datetime.strptime("1/1/1970", "%m/%d/%Y")
+            else:
+                job['ToDropDate'] = datetime.datetime.strptime("1/1/1970", "%m/%d/%Y")
+        
+    # filter out today's jobs
+    for job in wrk_jobs_list:
+        if job['DropDate'] == ending_date:
+            stats_todays_jobs.append(job)
+    
+    # get and tally piece totals for each of today's jobs
+    for job in stats_todays_jobs:
+        cnxn = pyodbc.connect(dbpath)
+        crsr = cnxn.cursor()
+        crsr.execute("SELECT PackShip, cbas, cpre, ccrt, cwalk125, csat, cbasbar, cdig3bar, cdig5bar, caadc, cmaadc, cbas3dig, foreign, canadian FROM [Job Details] where jobnum = ?", (str(job['Jobnum'])))
+        detail_rows = crsr.fetchall()
+        # close the connection/lock
+        cnxn.close()
+        pieceTotal = 0
+        if detail_rows:
+            for pat in detail_rows:
+                pieceTotal = pieceTotal + pat.PackShip + pat.cbas + pat.cpre + pat.ccrt + pat.cwalk125 + pat.csat + pat.cbasbar + pat.cdig3bar + pat.cdig5bar + pat.caadc + pat.cmaadc + pat.cbas3dig + pat.foreign + pat.canadian
+        else:
+            pieceTotal = 0
+
+        job['PieceCount'] = pieceTotal    
+
+    stats_all ['todaysJobs'] = stats_todays_jobs
+
+    """
+    Return the response data (JSON)
+    """
+    return Response(stats_all)

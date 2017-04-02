@@ -41,11 +41,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'rest_framework',
+    'corsheaders',
+
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -73,6 +76,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'pyACCESS.wsgi.application'
 
+# CORS
+CORS_ORIGIN_ALLOW_ALL = True 
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
